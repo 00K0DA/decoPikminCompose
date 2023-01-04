@@ -26,15 +26,11 @@ data class PikminData(
         pikminStatusType = pikminStatusType.update()
     }
 
-    override fun equals(other: Any?): Boolean {
-        return if (other is PikminData) {
-            this.decorType == other.decorType &&
-                    this.costumeType == other.costumeType &&
-                    this.pikminType == other.pikminType &&
-                    this.number == other.number
-        } else {
-            false
-        }
+    fun isSamePikmin(pikminData: PikminData): Boolean {
+        return this.decorType == pikminData.decorType &&
+                this.costumeType == pikminData.costumeType &&
+                this.pikminType == pikminData.pikminType &&
+                this.number == pikminData.number
     }
 
     override fun hashCode(): Int {
