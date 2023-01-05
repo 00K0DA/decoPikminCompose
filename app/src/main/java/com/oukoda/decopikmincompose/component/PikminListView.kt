@@ -16,13 +16,12 @@ import com.oukoda.decopikmincompose.R
 import com.oukoda.decopikmincompose.model.CostumeType
 import com.oukoda.decopikmincompose.model.DecorType
 import com.oukoda.decopikmincompose.model.PikminData
-import com.oukoda.decopikmincompose.model.PikminStatusType
+import com.oukoda.decopikmincompose.model.PikminDataList
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
 @Composable
 fun PikminListView(
-    costumeType: CostumeType,
-    pikminDataList: List<PikminData>,
+    pikminDataList: PikminDataList,
     onClick: (pikminData: PikminData) -> Unit
 ) {
     var pikminDataListInternal by remember {
@@ -30,17 +29,9 @@ fun PikminListView(
     }
 
     PikminListViewInternal(
-        costumeType = costumeType,
         pikminDataList = pikminDataListInternal,
         onClick = { updatePikminData ->
-            pikminDataListInternal =
-                pikminDataListInternal.map {
-                    if (it.isSamePikmin(updatePikminData)) {
-                        updatePikminData
-                    } else {
-                        it
-                    }
-                }
+            pikminDataListInternal = pikminDataListInternal.updatePikminData(updatePikminData)
             onClick(updatePikminData)
         },
     )
@@ -49,12 +40,10 @@ fun PikminListView(
 @Composable
 @VisibleForTesting
 private fun PikminListViewInternal(
-    costumeType: CostumeType,
-    pikminDataList: List<PikminData>,
+    pikminDataList: PikminDataList,
     onClick: (pikminData: PikminData) -> Unit
 ) {
-    val costumeName = stringResource(id = costumeType.getCostumeTextId())
-    val hasCount = pikminDataList.count { it.pikminStatusType != PikminStatusType.NotHave }
+    val costumeName = stringResource(id = pikminDataList.costumeType.getCostumeTextId())
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -62,7 +51,7 @@ private fun PikminListViewInternal(
         Text(
             text = stringResource(id = R.string.pikmin_list_view_status).format(
                 costumeName,
-                hasCount,
+                pikminDataList.getHaveCount(),
                 pikminDataList.count()
             )
         )
@@ -88,17 +77,16 @@ private fun PikminListViewPreview() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            val pikminDataList: List<PikminData> =
+            val pikminDataListInternal: List<PikminData> =
                 CostumeType.getPikminList(CostumeType.Acorn).map {
                     PikminData.newInstance(
                         decorType = DecorType.Forest,
-                        costumeType = CostumeType.Acorn,
                         pikminType = it,
                         number = 0,
                     )
                 }
+            val pikminDataList = PikminDataList(CostumeType.Acorn, pikminDataListInternal)
             PikminListView(
-                costumeType = CostumeType.Acorn,
                 pikminDataList = pikminDataList,
                 onClick = {
                     Log.d("pikminViewList", "PikminListViewPreview: $it")
