@@ -17,10 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.oukoda.decopikmincompose.model.DecorType
-import com.oukoda.decopikmincompose.model.PikminData
-import com.oukoda.decopikmincompose.model.PikminStatusType
-import com.oukoda.decopikmincompose.model.PikminType
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
+import com.oukoda.decopikmincompose.model.dataclass.PikminData
+import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
+import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
 @Composable

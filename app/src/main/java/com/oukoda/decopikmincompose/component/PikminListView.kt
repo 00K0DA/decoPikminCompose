@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.oukoda.decopikmincompose.R
-import com.oukoda.decopikmincompose.model.CostumeType
-import com.oukoda.decopikmincompose.model.DecorType
-import com.oukoda.decopikmincompose.model.PikminData
-import com.oukoda.decopikmincompose.model.PikminDataList
+import com.oukoda.decopikmincompose.model.enumclass.CostumeType
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
+import com.oukoda.decopikmincompose.model.dataclass.PikminData
+import com.oukoda.decopikmincompose.model.dataclass.PikminDataList
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
 @Composable

@@ -1,4 +1,7 @@
-package com.oukoda.decopikmincompose.model
+package com.oukoda.decopikmincompose.model.dataclass
+
+import com.oukoda.decopikmincompose.model.enumclass.CostumeType
+import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 
 class PikminDataList(
     val costumeType: CostumeType,
@@ -64,5 +67,12 @@ class PikminDataList(
             return this.pikminDataList == other.pikminDataList && this.costumeType == other.costumeType
         }
         return false
+    }
+
+    override fun hashCode(): Int {
+        var result = costumeType.hashCode()
+        result = 31 * result + pikminDataList.hashCode()
+        result = 31 * result + size
+        return result
     }
 }

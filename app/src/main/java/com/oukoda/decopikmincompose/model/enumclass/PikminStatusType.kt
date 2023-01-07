@@ -1,4 +1,4 @@
-package com.oukoda.decopikmincompose.model
+package com.oukoda.decopikmincompose.model.enumclass
 
 import androidx.compose.ui.graphics.Color
 import com.oukoda.decopikmincompose.R
