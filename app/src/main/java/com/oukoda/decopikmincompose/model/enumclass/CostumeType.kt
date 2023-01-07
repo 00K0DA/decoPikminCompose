@@ -1,4 +1,4 @@
-package com.oukoda.decopikmincompose.model
+package com.oukoda.decopikmincompose.model.enumclass
 
 import com.oukoda.decopikmincompose.R
 

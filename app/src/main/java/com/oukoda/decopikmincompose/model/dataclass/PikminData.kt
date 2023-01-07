@@ -1,4 +1,8 @@
-package com.oukoda.decopikmincompose.model
+package com.oukoda.decopikmincompose.model.dataclass
+
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
+import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
+import com.oukoda.decopikmincompose.model.enumclass.PikminType
 
 data class PikminData(
     val decorType: DecorType,
