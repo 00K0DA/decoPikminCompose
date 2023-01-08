@@ -1,22 +1,19 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
-import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 
 data class PikminData(
-    val decorType: DecorType,
     val pikminType: PikminType,
     val number: Int,
     val pikminStatusType: PikminStatusType
 ) {
     companion object {
         fun newInstance(
-            decorType: DecorType,
             pikminType: PikminType,
             number: Int
         ): PikminData {
-            return PikminData(decorType, pikminType, number, PikminStatusType.NotHave)
+            return PikminData(pikminType, number, PikminStatusType.NotHave)
         }
     }
 
@@ -25,14 +22,12 @@ data class PikminData(
     }
 
     fun isSamePikmin(pikminData: PikminData): Boolean {
-        return this.decorType == pikminData.decorType &&
-                this.pikminType == pikminData.pikminType &&
+        return this.pikminType == pikminData.pikminType &&
                 this.number == pikminData.number
     }
 
     override fun hashCode(): Int {
-        var result = decorType.hashCode()
-        result = 31 * result + pikminType.hashCode()
+        var result = 31 * pikminType.hashCode()
         result = 31 * result + number
         return result
     }
@@ -43,7 +38,6 @@ data class PikminData(
 
         other as PikminData
 
-        if (decorType != other.decorType) return false
         if (pikminType != other.pikminType) return false
         if (number != other.number) return false
         if (pikminStatusType != other.pikminStatusType) return false

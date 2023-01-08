@@ -15,25 +15,32 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.oukoda.decopikmincompose.model.CostumeType
-import com.oukoda.decopikmincompose.model.DecorType
-import com.oukoda.decopikmincompose.model.PikminData
+import com.oukoda.decopikmincompose.model.dataclass.PikminCostumeList
+import com.oukoda.decopikmincompose.model.dataclass.PikminData
+import com.oukoda.decopikmincompose.model.dataclass.PikminDataList
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 import com.oukoda.decopikmincompose.ui.theme.completeColor
-import com.oukoda.decopikmincompose.ui.theme.redPikminColor
+import com.oukoda.decopikmincompose.ui.theme.progressColor
 
 
 @Composable
 fun PikminDecorView(
-
+    pikminCostumeList: PikminCostumeList
 ) {
     var isExpand by remember {
         mutableStateOf(false)
     }
+
+    var pikminCostumeListInternal by remember {
+        mutableStateOf(pikminCostumeList)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,24 +53,18 @@ fun PikminDecorView(
                 .clip(RoundedCornerShape(24.dp))
                 .border(
                     width = 2.dp,
-                    color = completeColor,
+                    color = if (pikminCostumeListInternal.isCompleted()) completeColor else progressColor,
                     shape = RoundedCornerShape(24.dp)
                 )
                 .clickable { isExpand = !isExpand }
                 .height(48.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("aaaa", fontSize = 20.sp)
+            Text(
+                stringResource(id = pikminCostumeListInternal.decorType.getDecorText()),
+                fontSize = 20.sp
+            )
         }
-        val pikminDataList: List<PikminData> =
-            CostumeType.getPikminList(CostumeType.Acorn).map {
-                PikminData.newInstance(
-                    decorType = DecorType.Forest,
-                    costumeType = CostumeType.Acorn,
-                    pikminType = it,
-                    number = 0,
-                )
-            }
         AnimatedVisibility(
             visible = isExpand,
             enter = expandVertically(
@@ -77,14 +78,14 @@ fun PikminDecorView(
             exit = shrinkVertically()
         ) {
             Column() {
-                PikminListView(
-                    costumeType = CostumeType.Acorn,
-                    pikminDataList = pikminDataList,
-                    onClick = {pikminData, haveCount ->  })
-                PikminListView(
-                    costumeType = CostumeType.Acorn,
-                    pikminDataList = pikminDataList,
-                    onClick = {pikminData, haveCount ->  })
+                pikminCostumeListInternal.forEach { pikminDataList ->
+                    PikminListView(pikminDataList, onClick = {
+                        val newPikminDataList = pikminDataList.updatePikminData(it)
+                        pikminCostumeListInternal =
+                            pikminCostumeListInternal.updatePikminDataList(newPikminDataList)
+
+                    })
+                }
             }
         }
     }
@@ -94,7 +95,16 @@ fun PikminDecorView(
 @Preview(showBackground = true)
 @Composable
 private fun PikminDecorViewPreview() {
+    val decorType: DecorType = DecorType.Restaurant
+    val pikminDataLists = decorType.getCostumes().map { costumeType ->
+        PikminDataList(costumeType = costumeType, pikminDataList =
+        costumeType.getPikminList().map { pikminType ->
+            PikminData.newInstance(pikminType, 0)
+        })
+    }
+    val pikminCostumeList =
+        PikminCostumeList(decorType = decorType, pikminDataLists = pikminDataLists)
     DecoPikminComposeTheme {
-        PikminDecorView()
+        PikminDecorView(pikminCostumeList)
     }
 }
