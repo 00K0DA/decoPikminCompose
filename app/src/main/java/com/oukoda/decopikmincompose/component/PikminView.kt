@@ -31,6 +31,7 @@ fun PikminView(
     pikminData: PikminData,
     onClick: (pikminData: PikminData) -> Unit,
 ) {
+    Log.d("s", "PikminView: $pikminData")
     Column(
         modifier = Modifier.width(pikminViewWidth),
         verticalArrangement = Arrangement.Center,

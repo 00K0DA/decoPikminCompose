@@ -13,11 +13,13 @@ import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    private val _decors: MutableState<List<PikminCostumeList>> = mutableStateOf(listOf())
-    val decors: State<List<PikminCostumeList>> = _decors
+    private val _decors: MutableStateFlow<List<PikminCostumeList>> = MutableStateFlow(listOf())
+    val decors: StateFlow<List<PikminCostumeList>> = _decors
 
     fun createDecors() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -41,7 +43,7 @@ class MainViewModel : ViewModel() {
                 val temp = _decors.value.toMutableList()
                 temp.add(pikminCostumeList)
                 viewModelScope.launch(Dispatchers.Main) { _decors.value = temp.toList() }
-                delay(1000)
+                delay(250)
             }
         }
     }
