@@ -51,7 +51,8 @@ enum class CostumeType(val value: String) {
     JackOLantern("JackOLantern"),
     FirstAnniversary("FirstAnniversary"),
 
-    ThemeParkTicket("ThemeParkTicket");
+    ThemeParkTicket("ThemeParkTicket"),
+    ;
 
     companion object {
         fun getAllPikminCount(): Int = values().sumOf { it.getPikminList().size }

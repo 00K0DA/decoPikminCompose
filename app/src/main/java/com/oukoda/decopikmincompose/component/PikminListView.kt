@@ -17,33 +17,32 @@ import com.oukoda.decopikmincompose.model.dataclass.PikminDataList
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
-
 @Composable
 fun PikminListView(
     pikminDataList: PikminDataList,
-    onClick: (pikminData: PikminData) -> Unit
+    onClick: (pikminData: PikminData) -> Unit,
 ) {
     val costumeName = stringResource(id = pikminDataList.costumeType.getCostumeTextId())
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = stringResource(id = R.string.pikmin_list_view_status).format(
                 costumeName,
                 pikminDataList.getHaveCount(),
-                pikminDataList.count()
-            )
+                pikminDataList.count(),
+            ),
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             for (pikminData in pikminDataList) {
                 PikminView(
                     pikminData = pikminData,
-                    onClick = { onClick(it) }
+                    onClick = { onClick(it) },
                 )
             }
         }
@@ -56,7 +55,7 @@ private fun PikminListViewPreview() {
     DecoPikminComposeTheme {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             val pikminDataListInternal: List<PikminData> =
                 CostumeType.Acorn.getPikminList().map {
@@ -68,7 +67,8 @@ private fun PikminListViewPreview() {
             val pikminDataList = PikminDataList(CostumeType.Acorn, pikminDataListInternal)
             PikminListView(
                 pikminDataList = pikminDataList,
-                onClick = {})
+                onClick = {},
+            )
         }
     }
 }

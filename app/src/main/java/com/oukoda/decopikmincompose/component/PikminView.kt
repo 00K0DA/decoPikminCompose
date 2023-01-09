@@ -4,7 +4,12 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +26,6 @@ import com.oukoda.decopikmincompose.model.dataclass.PikminData
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
-
 
 private val pikminViewWidth: Dp = 40.dp
 private val roundedCornerShape: Dp = 10.dp
@@ -43,7 +47,7 @@ fun PikminView(
                 .clip(RoundedCornerShape(roundedCornerShape))
                 .background(pikminData.pikminType.color())
                 .clickable { onClick(pikminData.statusUpdate()) },
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             PikminTypeText(pikminType = pikminData.pikminType)
         }
@@ -77,7 +81,7 @@ private fun PikminViewPreview() {
     DecoPikminComposeTheme {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             for (pikminType in PikminType.values()) {
                 val pikminData = PikminData.newInstance(
@@ -86,7 +90,7 @@ private fun PikminViewPreview() {
                 )
                 PikminView(
                     pikminData = pikminData,
-                    onClick = { Log.d("aaa", "PikminViewPreview: onClick") }
+                    onClick = { Log.d("aaa", "PikminViewPreview: onClick") },
                 )
             }
         }

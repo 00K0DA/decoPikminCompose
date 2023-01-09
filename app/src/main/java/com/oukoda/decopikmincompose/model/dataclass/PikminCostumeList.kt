@@ -5,18 +5,21 @@ import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 
 class PikminCostumeList(
     val decorType: DecorType,
-    private val pikminDataLists: List<PikminDataList>
+    private val pikminDataLists: List<PikminDataList>,
 ) : List<PikminDataList> {
     override val size: Int = pikminDataLists.size
 
     fun updatePikminDataList(pikminDataList: PikminDataList): PikminCostumeList {
-        return PikminCostumeList(decorType, pikminDataLists.map {
-            if (it.costumeType == pikminDataList.costumeType) {
-                pikminDataList
-            } else {
-                it
-            }
-        })
+        return PikminCostumeList(
+            decorType,
+            pikminDataLists.map {
+                if (it.costumeType == pikminDataList.costumeType) {
+                    pikminDataList
+                } else {
+                    it
+                }
+            },
+        )
     }
 
     fun isCompleted(): Boolean {

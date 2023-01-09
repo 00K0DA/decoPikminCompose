@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.VisibleForTesting
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
@@ -26,7 +30,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainScreen()
         }
-
     }
 
     @Composable
@@ -40,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colors.background,
             ) {
-                Column() {
+                Column {
                     Spacer(modifier = Modifier.height(16.dp))
                     CreatePikminDecorView(decors)
                     Spacer(modifier = Modifier.height(16.dp))
@@ -53,7 +56,7 @@ class MainActivity : ComponentActivity() {
     @VisibleForTesting
     private fun CreatePikminDecorView(decors: List<PikminCostumeList>) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(decors) { decor ->
                 PikminDecorView(decor)
@@ -61,7 +64,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

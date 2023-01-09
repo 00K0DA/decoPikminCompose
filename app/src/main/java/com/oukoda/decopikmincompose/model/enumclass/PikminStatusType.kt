@@ -9,7 +9,9 @@ import com.oukoda.decopikmincompose.ui.theme.notHaveStatusColor
 enum class PikminStatusType(val value: Int) {
     AlreadyExists(0),
     Growing(1),
-    NotHave(2);
+    NotHave(2),
+
+    ;
 
     companion object {
         fun create(value: Int): PikminStatusType = values().first { it.value == value }
@@ -20,7 +22,6 @@ enum class PikminStatusType(val value: Int) {
         Growing -> NotHave
         NotHave -> AlreadyExists
     }
-
 
     fun stringId(): Int = when (this) {
         AlreadyExists -> R.string.pikmin_status_already
