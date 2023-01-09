@@ -54,24 +54,23 @@ enum class CostumeType(val value: String) {
     ThemeParkTicket("ThemeParkTicket");
 
     companion object {
-        fun getPikminList(costumeType: CostumeType): List<PikminType> {
-            return when (costumeType) {
-                Mario -> listOf(PikminType.Red)
-                Chess ->
-                    listOf(PikminType.Yellow, PikminType.Blue, PikminType.White, PikminType.Purple)
-                LeafHat -> listOf(PikminType.Blue, PikminType.Blue, PikminType.Blue)
-                ShinyChef, NewYear, MountainPinBadge, Sushi, ThemeParkTicket ->
-                    listOf(PikminType.Red, PikminType.Blue, PikminType.Yellow)
-                FingerBoard ->
-                    listOf(PikminType.Red, PikminType.Yellow, PikminType.Purple, PikminType.Wing)
-                FlowerCard ->
-                    listOf(PikminType.Red, PikminType.Yellow, PikminType.Blue, PikminType.Purple)
-                else -> PikminType.values().toList()
-            }
+        fun getAllPikminCount(): Int = values().sumOf { it.getPikminList().size }
+    }
+
+    fun getPikminList(): List<PikminType> {
+        return when (this) {
+            Mario -> listOf(PikminType.Red)
+            Chess ->
+                listOf(PikminType.Yellow, PikminType.Blue, PikminType.White, PikminType.Purple)
+            LeafHat -> listOf(PikminType.Blue, PikminType.Blue, PikminType.Blue)
+            ShinyChef, NewYear, MountainPinBadge, Sushi, ThemeParkTicket ->
+                listOf(PikminType.Red, PikminType.Blue, PikminType.Yellow)
+            FingerBoard ->
+                listOf(PikminType.Red, PikminType.Yellow, PikminType.Purple, PikminType.Wing)
+            FlowerCard ->
+                listOf(PikminType.Red, PikminType.Yellow, PikminType.Blue, PikminType.Purple)
+            else -> PikminType.values().toList()
         }
-
-        fun getAllPikminCount(): Int = values().sumOf { getPikminList(it).size }
-
     }
 
     fun getCostumeTextId(): Int {

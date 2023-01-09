@@ -7,7 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,36 +17,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.dataclass.PikminData
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
+
+
+private val pikminViewWidth: Dp = 40.dp
+private val roundedCornerShape: Dp = 10.dp
 
 @Composable
 fun PikminView(
     pikminData: PikminData,
     onClick: (pikminData: PikminData) -> Unit,
 ) {
-    var pikminDataInternal by remember {
-        mutableStateOf(pikminData)
-    }
-
-    PikminViewInternal(pikminDataInternal) {
-        pikminDataInternal = pikminDataInternal.statusUpdate()
-        onClick(pikminDataInternal)
-    }
-}
-
-private val pikminViewWidth: Dp = 40.dp
-private val roundedCornerShape: Dp = 10.dp
-
-@Composable
-@VisibleForTesting
-private fun PikminViewInternal(
-    pikminData: PikminData,
-    onClick: () -> Unit,
-) {
+    Log.d("s", "PikminView: $pikminData")
     Column(
         modifier = Modifier.width(pikminViewWidth),
         verticalArrangement = Arrangement.Center,
@@ -57,7 +42,7 @@ private fun PikminViewInternal(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(roundedCornerShape))
                 .background(pikminData.pikminType.color())
-                .clickable { onClick() },
+                .clickable { onClick(pikminData.statusUpdate()) },
             contentAlignment = Alignment.Center
         ) {
             PikminTypeText(pikminType = pikminData.pikminType)
@@ -96,7 +81,6 @@ private fun PikminViewPreview() {
         ) {
             for (pikminType in PikminType.values()) {
                 val pikminData = PikminData.newInstance(
-                    decorType = DecorType.Airport,
                     pikminType = pikminType,
                     number = 0,
                 )

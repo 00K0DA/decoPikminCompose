@@ -1,6 +1,7 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
+import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 
 class PikminCostumeList(
     val decorType: DecorType,
@@ -16,6 +17,17 @@ class PikminCostumeList(
                 it
             }
         })
+    }
+
+    fun isCompleted(): Boolean {
+        pikminDataLists.forEach { pikminDataList ->
+            pikminDataList.forEach {
+                if (it.pikminStatusType == PikminStatusType.NotHave) {
+                    return false
+                }
+            }
+        }
+        return true
     }
 
     override fun contains(element: PikminDataList): Boolean {
