@@ -22,22 +22,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.oukoda.decopikmincompose.model.dataclass.PikminData
+import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
-private val pikminViewWidth: Dp = 40.dp
+private val pikminIdentifierViewWidth: Dp = 40.dp
 private val roundedCornerShape: Dp = 10.dp
 
 @Composable
-fun PikminView(
-    pikminData: PikminData,
-    onClick: (pikminData: PikminData) -> Unit,
+fun PikminIdentifierView(
+    pikminIdentifier: PikminIdentifier,
+    onClick: (pikminIdentifier: PikminIdentifier) -> Unit,
 ) {
-    Log.d("s", "PikminView: $pikminData")
     Column(
-        modifier = Modifier.width(pikminViewWidth),
+        modifier = Modifier.width(pikminIdentifierViewWidth),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -45,13 +44,13 @@ fun PikminView(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(roundedCornerShape))
-                .background(pikminData.pikminType.color())
-                .clickable { onClick(pikminData.statusUpdate()) },
+                .background(pikminIdentifier.pikminType.color())
+                .clickable { onClick(pikminIdentifier.statusUpdate()) },
             contentAlignment = Alignment.Center,
         ) {
-            PikminTypeText(pikminType = pikminData.pikminType)
+            PikminTypeText(pikminType = pikminIdentifier.pikminType)
         }
-        PikminStatusText(pikminStatusType = pikminData.pikminStatusType)
+        PikminStatusText(pikminStatusType = pikminIdentifier.pikminStatusType)
     }
 }
 
@@ -84,13 +83,13 @@ private fun PikminViewPreview() {
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             for (pikminType in PikminType.values()) {
-                val pikminData = PikminData.newInstance(
+                val pikminIdentifier = PikminIdentifier.newInstance(
                     pikminType = pikminType,
                     number = 0,
                 )
-                PikminView(
-                    pikminData = pikminData,
-                    onClick = { Log.d("aaa", "PikminViewPreview: onClick") },
+                PikminIdentifierView(
+                    pikminIdentifier = pikminIdentifier,
+                    onClick = { Log.d("PikminViewPreview", "PikminViewPreview: onClick") },
                 )
             }
         }

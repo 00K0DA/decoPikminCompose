@@ -19,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.oukoda.decopikmincompose.component.PikminDecorView
-import com.oukoda.decopikmincompose.model.dataclass.PikminCostumeList
+import com.oukoda.decopikmincompose.component.DecorGroupView
+import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.viewmodel.MainViewModel
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
@@ -54,12 +54,12 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     @VisibleForTesting
-    private fun CreatePikminDecorView(decors: List<PikminCostumeList>) {
+    private fun CreatePikminDecorView(decors: List<DecorGroup>) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(decors) { decor ->
-                PikminDecorView(decor)
+                DecorGroupView(decor)
             }
         }
     }
