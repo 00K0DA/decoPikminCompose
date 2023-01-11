@@ -6,7 +6,9 @@ https://github.com/00K0DA/decopikmin
 
 ## テーブル定義
 decor_type, costume_type, pikmin_typeなどはIntで管理するか悩んだが、
+
 StringとIntでのSelectによる時間の差はほとんどないようなので、
+
 Enumで定義しやすく、可読性もよいStringを採択した。
 
 ### pikmin_status_table
