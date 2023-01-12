@@ -2,7 +2,13 @@ package com.oukoda.decopikmincompose.model.enumclass
 
 import androidx.compose.ui.graphics.Color
 import com.oukoda.decopikmincompose.R
-import com.oukoda.decopikmincompose.ui.theme.*
+import com.oukoda.decopikmincompose.ui.theme.bluePikminColor
+import com.oukoda.decopikmincompose.ui.theme.purplePikminColor
+import com.oukoda.decopikmincompose.ui.theme.redPikminColor
+import com.oukoda.decopikmincompose.ui.theme.rockPikminColor
+import com.oukoda.decopikmincompose.ui.theme.whitePikminColor
+import com.oukoda.decopikmincompose.ui.theme.wingPikminColor
+import com.oukoda.decopikmincompose.ui.theme.yellowPikminColor
 
 enum class PikminType(val value: String) {
     Red("Red"),
@@ -11,7 +17,8 @@ enum class PikminType(val value: String) {
     White("White"),
     Purple("Purple"),
     Rock("Rock"),
-    Wing("Wing");
+    Wing("Wing"),
+    ;
 
     fun color(): Color = when (this) {
         Red -> redPikminColor

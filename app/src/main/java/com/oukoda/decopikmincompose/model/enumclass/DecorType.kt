@@ -30,7 +30,8 @@ enum class DecorType {
     Mountain,
     Weather,
     ThemePark,
-    BusStop;
+    BusStop,
+    ;
 
     fun getCostumes(): List<CostumeType> {
         return when (this) {
@@ -63,7 +64,7 @@ enum class DecorType {
                     CostumeType.FingerBoard,
                     CostumeType.FlowerCard,
                     CostumeType.JackOLantern,
-                    CostumeType.FirstAnniversary
+                    CostumeType.FirstAnniversary,
                 )
             LoadSide -> listOf(CostumeType.Sticker)
             SushiRestaurant -> listOf(CostumeType.Sushi)

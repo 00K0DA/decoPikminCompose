@@ -6,12 +6,12 @@ import com.oukoda.decopikmincompose.model.enumclass.PikminType
 data class PikminData(
     val pikminType: PikminType,
     val number: Int,
-    val pikminStatusType: PikminStatusType
+    val pikminStatusType: PikminStatusType,
 ) {
     companion object {
         fun newInstance(
             pikminType: PikminType,
-            number: Int
+            number: Int,
         ): PikminData {
             return PikminData(pikminType, number, PikminStatusType.NotHave)
         }
@@ -23,7 +23,7 @@ data class PikminData(
 
     fun isSamePikmin(pikminData: PikminData): Boolean {
         return this.pikminType == pikminData.pikminType &&
-                this.number == pikminData.number
+            this.number == pikminData.number
     }
 
     override fun hashCode(): Int {

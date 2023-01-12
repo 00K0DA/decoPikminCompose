@@ -5,19 +5,22 @@ import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 
 class PikminDataList(
     val costumeType: CostumeType,
-    private var pikminDataList: List<PikminData>
+    private var pikminDataList: List<PikminData>,
 ) : List<PikminData> {
     fun getHaveCount(): Int =
         pikminDataList.count { it.pikminStatusType != PikminStatusType.NotHave }
 
     fun updatePikminData(pikminData: PikminData): PikminDataList {
-        return PikminDataList(costumeType, pikminDataList.map {
-            if (it.isSamePikmin(pikminData)) {
-                pikminData
-            } else {
-                it
-            }
-        })
+        return PikminDataList(
+            costumeType,
+            pikminDataList.map {
+                if (it.isSamePikmin(pikminData)) {
+                    pikminData
+                } else {
+                    it
+                }
+            },
+        )
     }
 
     override val size: Int = pikminDataList.size
