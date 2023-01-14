@@ -20,7 +20,7 @@ import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 @Composable
 fun CostumeGroupView(
     costumeGroup: CostumeGroup,
-    onClick: (pikminIdentifier: PikminIdentifier) -> Unit,
+    onClick: (costumeType: CostumeType, pikminIdentifier: PikminIdentifier) -> Unit,
 ) {
     val costumeName = stringResource(id = costumeGroup.costumeType.getCostumeTextId())
     Column(
@@ -42,7 +42,7 @@ fun CostumeGroupView(
             for (pikminData in costumeGroup) {
                 PikminIdentifierView(
                     pikminIdentifier = pikminData,
-                    onClick = { onClick(it) },
+                    onClick = { onClick(costumeGroup.costumeType, it) },
                 )
             }
         }
@@ -67,7 +67,7 @@ private fun PikminListViewPreview() {
             val costumeGroup = CostumeGroup(CostumeType.Acorn, pikminIdentifierListInternals)
             CostumeGroupView(
                 costumeGroup = costumeGroup,
-                onClick = {},
+                onClick = { _: CostumeType, _: PikminIdentifier -> },
             )
         }
     }

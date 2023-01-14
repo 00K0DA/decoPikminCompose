@@ -1,7 +1,10 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
+import com.oukoda.decopikmincompose.model.enumclass.CostumeType
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
+import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 
 data class PikminIdentifier(
     val pikminType: PikminType,
@@ -23,7 +26,21 @@ data class PikminIdentifier(
 
     fun isSamePikmin(pikminIdentifier: PikminIdentifier): Boolean {
         return this.pikminType == pikminIdentifier.pikminType &&
-            this.number == pikminIdentifier.number
+                this.number == pikminIdentifier.number
+    }
+
+    fun isSamePikmin(record: PikminRecord): Boolean {
+        if (record.pikminType != pikminType) return false
+        if (record.pikminNumber != number) return false
+        return true
+    }
+
+    fun applyRecord(record: PikminRecord): PikminIdentifier {
+        return PikminIdentifier(pikminType, number, record.pikminStatus)
+    }
+
+    fun toPikminRecord(decorType: DecorType, costumeType: CostumeType): PikminRecord {
+        return PikminRecord(decorType, costumeType, pikminType, number, pikminStatusType)
     }
 
     override fun hashCode(): Int {

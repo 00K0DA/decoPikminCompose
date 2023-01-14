@@ -31,7 +31,9 @@ import androidx.compose.ui.unit.sp
 import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
+import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
+import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 import com.oukoda.decopikmincompose.ui.theme.completeColor
 import com.oukoda.decopikmincompose.ui.theme.progressColor
@@ -39,6 +41,7 @@ import com.oukoda.decopikmincompose.ui.theme.progressColor
 @Composable
 fun DecorGroupView(
     decorGroup: DecorGroup,
+    onClick: (pikminRecord: PikminRecord) -> Unit,
 ) {
     var isExpand by remember {
         mutableStateOf(false)
@@ -86,11 +89,22 @@ fun DecorGroupView(
         ) {
             Column {
                 pikminCostumeListInternal.forEach { pikminDataList ->
-                    CostumeGroupView(pikminDataList, onClick = {
-                        val newPikminDataList = pikminDataList.updatePikminData(it)
-                        pikminCostumeListInternal =
-                            pikminCostumeListInternal.updatePikminDataList(newPikminDataList)
-                    })
+                    CostumeGroupView(
+                        pikminDataList,
+                        onClick = { costumeType: CostumeType, pikminIdentifier: PikminIdentifier ->
+                            val newPikminIdentifiers =
+                                pikminDataList.updatePikminData(pikminIdentifier)
+                            pikminCostumeListInternal =
+                                pikminCostumeListInternal.updatePikminIdentifiers(
+                                    newPikminIdentifiers
+                                )
+                            onClick(
+                                pikminIdentifier.toPikminRecord(
+                                    decorGroup.decorType,
+                                    costumeType
+                                )
+                            )
+                        })
                 }
             }
         }
@@ -113,6 +127,6 @@ private fun PikminDecorViewPreview() {
     val decorGroup =
         DecorGroup(decorType = decorType, costumeGroups = pikminIdentifierLists)
     DecoPikminComposeTheme {
-        DecorGroupView(decorGroup)
+        DecorGroupView(decorGroup) {}
     }
 }

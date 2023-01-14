@@ -1,12 +1,27 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
+import com.oukoda.decopikmincompose.model.enumclass.PikminType
+import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 
 class CostumeGroup(
     val costumeType: CostumeType,
-    private var pikminIdentifiers: List<PikminIdentifier>,
+    private val pikminIdentifiers: List<PikminIdentifier>,
 ) : List<PikminIdentifier> {
+    companion object {
+        fun newInstance(costumeType: CostumeType): CostumeGroup {
+            val pikminCountByColor = PikminType.values().associateWith { 0 }.toMutableMap()
+            val pikminIdentifiers = costumeType.getPikminList().map { pikminType ->
+                val number = pikminCountByColor[pikminType]!!
+                pikminCountByColor[pikminType] = number + 1
+                PikminIdentifier.newInstance(pikminType, number)
+            }
+            return CostumeGroup(costumeType, pikminIdentifiers)
+        }
+    }
+
     fun getHaveCount(): Int =
         pikminIdentifiers.count { it.pikminStatusType != PikminStatusType.NotHave }
 
@@ -24,6 +39,42 @@ class CostumeGroup(
     }
 
     override val size: Int = pikminIdentifiers.size
+    fun compareToPikminRecords(
+        decorType: DecorType,
+        pikminRecords: List<PikminRecord>
+    ): Pair<List<PikminRecord>, List<PikminRecord>> {
+        val insertRecords: MutableList<PikminRecord> = pikminIdentifiers.map {
+            it.toPikminRecord(decorType, costumeType)
+        } as MutableList<PikminRecord>
+        val deleteRecords: MutableList<PikminRecord> = mutableListOf()
+
+        val removeFromInsertRecords: MutableList<PikminRecord> = mutableListOf()
+        for (record in insertRecords) {
+            for (existRecord in pikminRecords) {
+                if (record.isSamePikminRecord(existRecord)) {
+                    removeFromInsertRecords.add(record)
+                    break
+                }
+                deleteRecords.add(existRecord)
+            }
+        }
+
+        insertRecords.removeAll(removeFromInsertRecords)
+        return Pair(insertRecords.toList(), deleteRecords.toList())
+    }
+
+    fun applyPikminRecords(pikminRecords: List<PikminRecord>): CostumeGroup{
+        val mutablePikminIdentifiers = pikminIdentifiers.toMutableList()
+        pikminRecords.forEach { record ->
+            for (index in mutablePikminIdentifiers.indices) {
+                if (mutablePikminIdentifiers[index].isSamePikmin(record)) {
+                    mutablePikminIdentifiers[index] =
+                        mutablePikminIdentifiers[index].applyRecord(record)
+                }
+            }
+        }
+        return CostumeGroup(costumeType, mutablePikminIdentifiers.toList())
+    }
 
     override fun contains(element: PikminIdentifier): Boolean {
         return pikminIdentifiers.contains(element)
