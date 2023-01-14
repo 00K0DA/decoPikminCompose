@@ -40,22 +40,24 @@ class MainViewModel(application: Application) : ViewModel() {
                 // Costumeごとに処理を行う
                 for (costumeType in decorType.getCostumes()) {
                     val filteredRecords = pikminRecords.filter { it.costumeType == costumeType }
-                    Log.d(TAG, "createDecors: $filteredRecords")
+                    Log.d(TAG, "createDecors: filteredRecords:$filteredRecords")
                     val initialCostumeGroup = CostumeGroup.newInstance(costumeType)
-                    Log.d(TAG, "createDecors: $initialCostumeGroup")
-                    val (shortageRecords, extraRecords) = initialCostumeGroup.compareToPikminRecords(
+                    initialCostumeGroup.forEach {
+                        Log.d(TAG, "createDecors: initialCostumeGroup: $it")
+                    }
+                    val (insertRecords, deleteRecords) = initialCostumeGroup.compareToPikminRecords(
                         decorType,
                         filteredRecords,
                     )
-                    Log.d(TAG, "createDecors: $shortageRecords")
-                    Log.d(TAG, "createDecors: $extraRecords")
+                    Log.d(TAG, "createDecors: insertRecords: $insertRecords")
+                    Log.d(TAG, "createDecors: deleteRecords: $deleteRecords")
                     // 不足しているデータをDBに追加
-                    for (record in shortageRecords) {
+                    for (record in insertRecords) {
                         pikminRecordDao.insert(record)
                     }
 
                     // 余分なデータをDBから削除
-                    for (record in extraRecords) {
+                    for (record in deleteRecords) {
                         pikminRecordDao.delete(record)
                     }
 
