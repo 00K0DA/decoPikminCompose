@@ -28,24 +28,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.oukoda.decopikmincompose.model.dataclass.PikminCostumeList
-import com.oukoda.decopikmincompose.model.dataclass.PikminData
-import com.oukoda.decopikmincompose.model.dataclass.PikminDataList
+import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
+import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
+import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 import com.oukoda.decopikmincompose.ui.theme.completeColor
 import com.oukoda.decopikmincompose.ui.theme.progressColor
 
 @Composable
-fun PikminDecorView(
-    pikminCostumeList: PikminCostumeList,
+fun DecorGroupView(
+    decorGroup: DecorGroup,
 ) {
     var isExpand by remember {
         mutableStateOf(false)
     }
 
     var pikminCostumeListInternal by remember {
-        mutableStateOf(pikminCostumeList)
+        mutableStateOf(decorGroup)
     }
 
     Column(
@@ -86,7 +86,7 @@ fun PikminDecorView(
         ) {
             Column {
                 pikminCostumeListInternal.forEach { pikminDataList ->
-                    PikminListView(pikminDataList, onClick = {
+                    CostumeGroupView(pikminDataList, onClick = {
                         val newPikminDataList = pikminDataList.updatePikminData(it)
                         pikminCostumeListInternal =
                             pikminCostumeListInternal.updatePikminDataList(newPikminDataList)
@@ -101,18 +101,18 @@ fun PikminDecorView(
 @Composable
 private fun PikminDecorViewPreview() {
     val decorType: DecorType = DecorType.Restaurant
-    val pikminDataLists = decorType.getCostumes().map { costumeType ->
-        PikminDataList(
+    val pikminIdentifierLists = decorType.getCostumes().map { costumeType ->
+        CostumeGroup(
             costumeType = costumeType,
-            pikminDataList =
+            pikminIdentifiers =
             costumeType.getPikminList().map { pikminType ->
-                PikminData.newInstance(pikminType, 0)
+                PikminIdentifier.newInstance(pikminType, 0)
             },
         )
     }
-    val pikminCostumeList =
-        PikminCostumeList(decorType = decorType, pikminDataLists = pikminDataLists)
+    val decorGroup =
+        DecorGroup(decorType = decorType, costumeGroups = pikminIdentifierLists)
     DecoPikminComposeTheme {
-        PikminDecorView(pikminCostumeList)
+        DecorGroupView(decorGroup)
     }
 }

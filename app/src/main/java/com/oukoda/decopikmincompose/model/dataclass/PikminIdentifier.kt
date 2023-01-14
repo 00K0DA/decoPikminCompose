@@ -3,7 +3,7 @@ package com.oukoda.decopikmincompose.model.dataclass
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 
-data class PikminData(
+data class PikminIdentifier(
     val pikminType: PikminType,
     val number: Int,
     val pikminStatusType: PikminStatusType,
@@ -12,18 +12,18 @@ data class PikminData(
         fun newInstance(
             pikminType: PikminType,
             number: Int,
-        ): PikminData {
-            return PikminData(pikminType, number, PikminStatusType.NotHave)
+        ): PikminIdentifier {
+            return PikminIdentifier(pikminType, number, PikminStatusType.NotHave)
         }
     }
 
-    fun statusUpdate(): PikminData {
+    fun statusUpdate(): PikminIdentifier {
         return this.copy(pikminStatusType = pikminStatusType.update())
     }
 
-    fun isSamePikmin(pikminData: PikminData): Boolean {
-        return this.pikminType == pikminData.pikminType &&
-            this.number == pikminData.number
+    fun isSamePikmin(pikminIdentifier: PikminIdentifier): Boolean {
+        return this.pikminType == pikminIdentifier.pikminType &&
+            this.number == pikminIdentifier.number
     }
 
     override fun hashCode(): Int {
@@ -36,7 +36,7 @@ data class PikminData(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as PikminData
+        other as PikminIdentifier
 
         if (pikminType != other.pikminType) return false
         if (number != other.number) return false

@@ -12,17 +12,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.oukoda.decopikmincompose.R
-import com.oukoda.decopikmincompose.model.dataclass.PikminData
-import com.oukoda.decopikmincompose.model.dataclass.PikminDataList
+import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
+import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
 @Composable
-fun PikminListView(
-    pikminDataList: PikminDataList,
-    onClick: (pikminData: PikminData) -> Unit,
+fun CostumeGroupView(
+    costumeGroup: CostumeGroup,
+    onClick: (pikminIdentifier: PikminIdentifier) -> Unit,
 ) {
-    val costumeName = stringResource(id = pikminDataList.costumeType.getCostumeTextId())
+    val costumeName = stringResource(id = costumeGroup.costumeType.getCostumeTextId())
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -31,17 +31,17 @@ fun PikminListView(
         Text(
             text = stringResource(id = R.string.pikmin_list_view_status).format(
                 costumeName,
-                pikminDataList.getHaveCount(),
-                pikminDataList.count(),
+                costumeGroup.getHaveCount(),
+                costumeGroup.count(),
             ),
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            for (pikminData in pikminDataList) {
-                PikminView(
-                    pikminData = pikminData,
+            for (pikminData in costumeGroup) {
+                PikminIdentifierView(
+                    pikminIdentifier = pikminData,
                     onClick = { onClick(it) },
                 )
             }
@@ -57,16 +57,16 @@ private fun PikminListViewPreview() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            val pikminDataListInternal: List<PikminData> =
+            val pikminIdentifierListInternals: List<PikminIdentifier> =
                 CostumeType.Acorn.getPikminList().map {
-                    PikminData.newInstance(
+                    PikminIdentifier.newInstance(
                         pikminType = it,
                         number = 0,
                     )
                 }
-            val pikminDataList = PikminDataList(CostumeType.Acorn, pikminDataListInternal)
-            PikminListView(
-                pikminDataList = pikminDataList,
+            val costumeGroup = CostumeGroup(CostumeType.Acorn, pikminIdentifierListInternals)
+            CostumeGroupView(
+                costumeGroup = costumeGroup,
                 onClick = {},
             )
         }
