@@ -1,6 +1,5 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
-import android.util.Log
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
@@ -49,14 +48,14 @@ class CostumeGroup(
         } as MutableList<PikminRecord>
         val deleteRecords: MutableList<PikminRecord> = mutableListOf()
 
-        for (pikminRecord in pikminRecords){
+        for (pikminRecord in pikminRecords) {
             var isRecordIn = false
-            for (insertRecord in insertRecords){
-                if (pikminRecord.isSamePikminRecord(insertRecord)){
+            for (insertRecord in insertRecords) {
+                if (pikminRecord.isSamePikminRecord(insertRecord)) {
                     isRecordIn = true
                 }
             }
-            if (!isRecordIn){
+            if (!isRecordIn) {
                 deleteRecords.add(pikminRecord)
             }
         }

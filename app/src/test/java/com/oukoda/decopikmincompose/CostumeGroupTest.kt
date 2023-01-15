@@ -1,6 +1,5 @@
 package com.oukoda.decopikmincompose
 
-import android.util.Log
 import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
 import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
@@ -12,10 +11,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.powermock.api.mockito.PowerMockito
-import org.powermock.core.classloader.annotations.PrepareForTest
-import org.powermock.modules.junit4.PowerMockRunner
 
 class CostumeGroupTest {
 
@@ -38,7 +33,7 @@ class CostumeGroupTest {
     fun size1() {
         val costumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            listOf(PikminIdentifier(PikminType.Red, 0, PikminStatusType.NotHave))
+            listOf(PikminIdentifier(PikminType.Red, 0, PikminStatusType.NotHave)),
         )
         assertEquals(1, costumeGroup.size)
     }
@@ -47,7 +42,7 @@ class CostumeGroupTest {
     fun size7() {
         val costumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
         assertEquals(7, costumeGroup.size)
     }
@@ -58,7 +53,7 @@ class CostumeGroupTest {
             CostumeType.Acorn,
             pikminIdentifiersBase.map {
                 it.copy(pikminStatusType = PikminStatusType.NotHave)
-            }
+            },
         )
         assertEquals(0, costumeGroup.getHaveCount())
     }
@@ -69,7 +64,7 @@ class CostumeGroupTest {
             CostumeType.Acorn,
             pikminIdentifiersBase.map {
                 it.copy(pikminStatusType = PikminStatusType.AlreadyExists)
-            }
+            },
         )
         assertEquals(costumeGroup.size, costumeGroup.getHaveCount())
     }
@@ -80,7 +75,7 @@ class CostumeGroupTest {
             CostumeType.Acorn,
             pikminIdentifiersBase.map {
                 it.copy(pikminStatusType = PikminStatusType.Growing)
-            }
+            },
         )
         assertEquals(costumeGroup.size, costumeGroup.getHaveCount())
     }
@@ -91,7 +86,7 @@ class CostumeGroupTest {
             PikminIdentifier(PikminType.Red, 0, PikminStatusType.AlreadyExists)
         val oldCostumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
         val newCostumeGroup = oldCostumeGroup.updatePikminData(newPikminIdentifier)
         assertTrue(newCostumeGroup.contains(newPikminIdentifier))
@@ -101,13 +96,13 @@ class CostumeGroupTest {
                 assertTrue(newCostumeGroup[index] == newPikminIdentifier)
                 assertEquals(
                     PikminStatusType.AlreadyExists,
-                    newCostumeGroup[index].pikminStatusType
+                    newCostumeGroup[index].pikminStatusType,
                 )
             } else {
                 assertTrue(newCostumeGroup[index] == oldCostumeGroup[index])
                 assertEquals(
                     PikminStatusType.NotHave,
-                    newCostumeGroup[index].pikminStatusType
+                    newCostumeGroup[index].pikminStatusType,
                 )
             }
         }
@@ -117,7 +112,7 @@ class CostumeGroupTest {
     fun applyPikminRecords() {
         val oldCostumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
 
         val prTemplate = PikminRecord(
@@ -125,7 +120,7 @@ class CostumeGroupTest {
             CostumeType.Acorn,
             PikminType.Red,
             0,
-            PikminStatusType.AlreadyExists
+            PikminStatusType.AlreadyExists,
         )
 
         val pikminRecords: List<PikminRecord> = PikminType.values().map {
@@ -143,14 +138,14 @@ class CostumeGroupTest {
     fun compareToPikminRecordsNoInsertDelete() {
         val costumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
         val prTemplate = PikminRecord(
             DecorType.Airport,
             CostumeType.Acorn,
             PikminType.Red,
             0,
-            PikminStatusType.AlreadyExists
+            PikminStatusType.AlreadyExists,
         )
 
         val pikminRecords: List<PikminRecord> = PikminType.values().map {
@@ -159,7 +154,7 @@ class CostumeGroupTest {
 
         val (insertList, deleteList) = costumeGroup.compareToPikminRecords(
             DecorType.Airport,
-            pikminRecords
+            pikminRecords,
         )
         assertEquals(0, insertList.size)
         assertEquals(0, deleteList.size)
@@ -169,14 +164,14 @@ class CostumeGroupTest {
     fun compareToPikminRecordsNoInsert() {
         val costumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
         val prTemplate = PikminRecord(
             DecorType.Airport,
             CostumeType.Acorn,
             PikminType.Red,
             0,
-            PikminStatusType.AlreadyExists
+            PikminStatusType.AlreadyExists,
         )
 
         val pikminRecords: MutableList<PikminRecord> = PikminType.values().map {
@@ -188,7 +183,7 @@ class CostumeGroupTest {
 
         val (insertList, deleteList) = costumeGroup.compareToPikminRecords(
             DecorType.Airport,
-            pikminRecords
+            pikminRecords,
         )
 
         assertEquals(0, insertList.size)
@@ -200,14 +195,14 @@ class CostumeGroupTest {
     fun compareToPikminRecordsNoDelete() {
         val costumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
         val prTemplate = PikminRecord(
             DecorType.Airport,
             CostumeType.Acorn,
             PikminType.Red,
             0,
-            PikminStatusType.AlreadyExists
+            PikminStatusType.AlreadyExists,
         )
 
         val pikminRecords: MutableList<PikminRecord> = PikminType.values().map {
@@ -219,13 +214,13 @@ class CostumeGroupTest {
 
         val (insertList, deleteList) = costumeGroup.compareToPikminRecords(
             DecorType.Airport,
-            pikminRecords
+            pikminRecords,
         )
         assertEquals(1, insertList.size)
         assertEquals(0, deleteList.size)
         assertEquals(
             insertRecord.copy(pikminStatus = PikminStatusType.NotHave),
-            insertList[0]
+            insertList[0],
         )
     }
 
@@ -233,14 +228,14 @@ class CostumeGroupTest {
     fun compareToPikminRecordsAllInsert() {
         val costumeGroup = CostumeGroup(
             CostumeType.Acorn,
-            pikminIdentifiersBase
+            pikminIdentifiersBase,
         )
 
         val pikminRecords: MutableList<PikminRecord> = mutableListOf()
 
         val (insertList, deleteList) = costumeGroup.compareToPikminRecords(
             DecorType.Airport,
-            pikminRecords
+            pikminRecords,
         )
         assertEquals(costumeGroup.size, insertList.size)
         assertEquals(0, deleteList.size)
