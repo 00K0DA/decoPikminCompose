@@ -7,12 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
-import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.room.AppDatabase
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -47,7 +45,7 @@ class MainViewModel(application: Application) : ViewModel() {
                     Log.d(TAG, "createDecors: $initialCostumeGroup")
                     val (shortageRecords, extraRecords) = initialCostumeGroup.compareToPikminRecords(
                         decorType,
-                        filteredRecords
+                        filteredRecords,
                     )
                     Log.d(TAG, "createDecors: $shortageRecords")
                     Log.d(TAG, "createDecors: $extraRecords")
@@ -80,7 +78,7 @@ class MainViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun updatePikminRecord(pikminRecord: PikminRecord){
+    fun updatePikminRecord(pikminRecord: PikminRecord) {
         viewModelScope.launch(Dispatchers.IO) {
             appDatabase.pikminRecordDao().update(pikminRecord)
         }

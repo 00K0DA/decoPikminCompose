@@ -41,7 +41,7 @@ class CostumeGroup(
     override val size: Int = pikminIdentifiers.size
     fun compareToPikminRecords(
         decorType: DecorType,
-        pikminRecords: List<PikminRecord>
+        pikminRecords: List<PikminRecord>,
     ): Pair<List<PikminRecord>, List<PikminRecord>> {
         val insertRecords: MutableList<PikminRecord> = pikminIdentifiers.map {
             it.toPikminRecord(decorType, costumeType)
@@ -63,7 +63,7 @@ class CostumeGroup(
         return Pair(insertRecords.toList(), deleteRecords.toList())
     }
 
-    fun applyPikminRecords(pikminRecords: List<PikminRecord>): CostumeGroup{
+    fun applyPikminRecords(pikminRecords: List<PikminRecord>): CostumeGroup {
         val mutablePikminIdentifiers = pikminIdentifiers.toMutableList()
         pikminRecords.forEach { record ->
             for (index in mutablePikminIdentifiers.indices) {

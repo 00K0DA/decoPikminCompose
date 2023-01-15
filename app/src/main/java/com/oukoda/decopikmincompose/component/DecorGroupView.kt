@@ -96,15 +96,16 @@ fun DecorGroupView(
                                 pikminDataList.updatePikminData(pikminIdentifier)
                             pikminCostumeListInternal =
                                 pikminCostumeListInternal.updatePikminIdentifiers(
-                                    newPikminIdentifiers
+                                    newPikminIdentifiers,
                                 )
                             onClick(
                                 pikminIdentifier.toPikminRecord(
                                     decorGroup.decorType,
-                                    costumeType
-                                )
+                                    costumeType,
+                                ),
                             )
-                        })
+                        },
+                    )
                 }
             }
         }

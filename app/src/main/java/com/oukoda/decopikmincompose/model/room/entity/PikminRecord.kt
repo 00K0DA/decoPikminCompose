@@ -12,9 +12,9 @@ data class PikminRecord(
     val costumeType: CostumeType,
     val pikminType: PikminType,
     val pikminNumber: Int,
-    val pikminStatus: PikminStatusType
+    val pikminStatus: PikminStatusType,
 ) {
-    fun isSamePikminRecord(record: PikminRecord): Boolean{
+    fun isSamePikminRecord(record: PikminRecord): Boolean {
         if (decorType != record.decorType) return false
         if (costumeType != record.costumeType) return false
         if (pikminType != record.pikminType) return false

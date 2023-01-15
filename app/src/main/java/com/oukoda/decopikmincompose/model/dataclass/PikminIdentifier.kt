@@ -26,7 +26,7 @@ data class PikminIdentifier(
 
     fun isSamePikmin(pikminIdentifier: PikminIdentifier): Boolean {
         return this.pikminType == pikminIdentifier.pikminType &&
-                this.number == pikminIdentifier.number
+            this.number == pikminIdentifier.number
     }
 
     fun isSamePikmin(record: PikminRecord): Boolean {

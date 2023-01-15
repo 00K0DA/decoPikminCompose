@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "pikmin_database"
+                        "pikmin_database",
                     ).fallbackToDestructiveMigration()
                         .addTypeConverter(RoomConverter())
                         .build()

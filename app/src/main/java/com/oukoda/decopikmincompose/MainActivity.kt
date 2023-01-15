@@ -40,13 +40,12 @@ class MainActivity : ComponentActivity() {
                     it,
                     "MainViewModel",
                     MainViewModel.MainViewModelFactory(
-                        LocalContext.current.applicationContext as Application
-                    )
+                        LocalContext.current.applicationContext as Application,
+                    ),
                 )
                 MainScreen(mainViewModel)
             }
         }
-
     }
 
     @Composable
@@ -61,7 +60,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Column {
                     Spacer(modifier = Modifier.height(16.dp))
-                    CreatePikminDecorView(decors) {pikminRecord ->
+                    CreatePikminDecorView(decors) { pikminRecord ->
                         mainViewModel.updatePikminRecord(pikminRecord)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
@@ -74,7 +73,7 @@ class MainActivity : ComponentActivity() {
     @VisibleForTesting
     private fun CreatePikminDecorView(
         decors: List<DecorGroup>,
-        onClick: (pikminRecord: PikminRecord) -> Unit
+        onClick: (pikminRecord: PikminRecord) -> Unit,
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
