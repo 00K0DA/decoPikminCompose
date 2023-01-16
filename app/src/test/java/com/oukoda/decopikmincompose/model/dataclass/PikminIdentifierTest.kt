@@ -1,4 +1,4 @@
-package com.oukoda.decopikmincompose
+package com.oukoda.decopikmincompose.model.dataclass
 
 import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
