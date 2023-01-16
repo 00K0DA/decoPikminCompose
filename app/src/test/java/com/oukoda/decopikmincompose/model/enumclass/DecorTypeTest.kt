@@ -17,7 +17,7 @@ class DecorTypeTest {
     }
 
     @Test
-    fun isCostumeUnique(){
+    fun isCostumeUnique() {
         val allCostumeList: List<CostumeType> = DecorType.values().map {
             it.getCostumes()
         }.flatten()
