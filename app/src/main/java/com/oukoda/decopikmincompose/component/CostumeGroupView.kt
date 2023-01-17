@@ -22,7 +22,7 @@ fun CostumeGroupView(
     costumeGroup: CostumeGroup,
     onClick: (costumeType: CostumeType, pikminIdentifier: PikminIdentifier) -> Unit,
 ) {
-    val costumeName = stringResource(id = costumeGroup.costumeType.getCostumeTextId())
+    val costumeName = stringResource(id = costumeGroup.costumeType.stringId())
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +58,7 @@ private fun PikminListViewPreview() {
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             val pikminIdentifierListInternals: List<PikminIdentifier> =
-                CostumeType.Acorn.getPikminList().map {
+                CostumeType.Acorn.pikminTypes().map {
                     PikminIdentifier.newInstance(
                         pikminType = it,
                         number = 0,

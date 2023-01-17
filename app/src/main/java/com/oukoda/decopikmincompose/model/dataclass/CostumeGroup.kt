@@ -13,7 +13,7 @@ class CostumeGroup(
     companion object {
         fun newInstance(costumeType: CostumeType): CostumeGroup {
             val pikminCountByColor = PikminType.values().associateWith { 0 }.toMutableMap()
-            val pikminIdentifiers = costumeType.getPikminList().map { pikminType ->
+            val pikminIdentifiers = costumeType.pikminTypes().map { pikminType ->
                 val number = pikminCountByColor[pikminType]!!
                 pikminCountByColor[pikminType] = number + 1
                 PikminIdentifier.newInstance(pikminType, number)

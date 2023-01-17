@@ -38,7 +38,7 @@ class MainViewModel(application: Application) : ViewModel() {
                 Log.d(TAG, "createDecors: $pikminRecords")
                 val mutableCostumeGroups: MutableList<CostumeGroup> = mutableListOf()
                 // Costumeごとに処理を行う
-                for (costumeType in decorType.getCostumes()) {
+                for (costumeType in decorType.costumeTypes()) {
                     val filteredRecords = pikminRecords.filter { it.costumeType == costumeType }
                     Log.d(TAG, "createDecors: filteredRecords:$filteredRecords")
                     val initialCostumeGroup = CostumeGroup.newInstance(costumeType)
