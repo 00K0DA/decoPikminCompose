@@ -10,14 +10,14 @@ import com.oukoda.decopikmincompose.ui.theme.whitePikminColor
 import com.oukoda.decopikmincompose.ui.theme.wingPikminColor
 import com.oukoda.decopikmincompose.ui.theme.yellowPikminColor
 
-enum class PikminType(val value: String) {
-    Red("Red"),
-    Blue("Blue"),
-    Yellow("Yellow"),
-    White("White"),
-    Purple("Purple"),
-    Rock("Rock"),
-    Wing("Wing"),
+enum class PikminType() {
+    Red,
+    Blue,
+    Yellow,
+    White,
+    Purple,
+    Rock,
+    Wing,
     ;
 
     fun color(): Color = when (this) {

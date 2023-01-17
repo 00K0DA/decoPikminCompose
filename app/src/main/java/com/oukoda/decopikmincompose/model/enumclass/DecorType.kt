@@ -2,7 +2,7 @@ package com.oukoda.decopikmincompose.model.enumclass
 
 import com.oukoda.decopikmincompose.R
 
-enum class DecorType {
+enum class DecorType() {
     Restaurant,
     Cafe,
     Sweetshop,
