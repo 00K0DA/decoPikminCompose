@@ -48,6 +48,18 @@ class CostumeGroup(
         } as MutableList<PikminRecord>
         val deleteRecords: MutableList<PikminRecord> = mutableListOf()
 
+        for (pikminRecord in pikminRecords) {
+            var isRecordIn = false
+            for (insertRecord in insertRecords) {
+                if (pikminRecord.isSamePikminRecord(insertRecord)) {
+                    isRecordIn = true
+                }
+            }
+            if (!isRecordIn) {
+                deleteRecords.add(pikminRecord)
+            }
+        }
+
         val removeFromInsertRecords: MutableList<PikminRecord> = mutableListOf()
         for (record in insertRecords) {
             for (existRecord in pikminRecords) {
@@ -55,7 +67,6 @@ class CostumeGroup(
                     removeFromInsertRecords.add(record)
                     break
                 }
-                deleteRecords.add(existRecord)
             }
         }
 
