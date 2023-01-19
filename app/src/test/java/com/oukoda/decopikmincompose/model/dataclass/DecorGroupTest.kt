@@ -1,8 +1,5 @@
-package com.oukoda.decopikmincompose.uitest.model.dataclass
+package com.oukoda.decopikmincompose.model.dataclass
 
-import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
-import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
-import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
