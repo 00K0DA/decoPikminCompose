@@ -1,6 +1,7 @@
-package com.oukoda.decopikmincompose.model.enumclass
+package com.oukoda.decopikmincompose.uitest.model.enumclass
 
 import androidx.compose.ui.graphics.Color
+import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

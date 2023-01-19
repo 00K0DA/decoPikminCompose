@@ -1,5 +1,7 @@
-package com.oukoda.decopikmincompose.model.enumclass
+package com.oukoda.decopikmincompose.uitest.model.enumclass
 
+import com.oukoda.decopikmincompose.model.enumclass.CostumeType
+import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
