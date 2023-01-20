@@ -3,6 +3,8 @@
 
 ## 確認内容
 <!-- 動作確認した内容を書いてください -->
-
+- [ ] ktlint
+- [ ] testDebugUnitTest
+- [ ]  connectedAndroidTest
 ## 補足
 <!-- 何かあれば -->
