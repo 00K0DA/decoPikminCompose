@@ -9,7 +9,7 @@ class DecorGroup(
 ) : List<CostumeGroup> {
     override val size: Int = costumeGroups.size
 
-    fun updatePikminIdentifiers(costumeGroup: CostumeGroup): DecorGroup {
+    fun updateCostumeGroup(costumeGroup: CostumeGroup): DecorGroup {
         return DecorGroup(
             decorType,
             costumeGroups.map {

@@ -95,7 +95,7 @@ fun DecorGroupView(
                             val newPikminIdentifiers =
                                 pikminDataList.updatePikminData(pikminIdentifier)
                             pikminCostumeListInternal =
-                                pikminCostumeListInternal.updatePikminIdentifiers(
+                                pikminCostumeListInternal.updateCostumeGroup(
                                     newPikminIdentifiers,
                                 )
                             onClick(
