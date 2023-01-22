@@ -62,7 +62,7 @@ class MainViewModel(application: Application) : ViewModel() {
                     }
 
                     // recordsを反映させたcostumeGroupの作成
-                    mutableCostumeGroups.add(initialCostumeGroup.applyPikminRecords(filteredRecords))
+                    mutableCostumeGroups.add(initialCostumeGroup.updateByPikminRecords(filteredRecords))
                 }
 
                 val decorGroup = DecorGroup(
