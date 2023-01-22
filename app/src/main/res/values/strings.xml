@@ -39,6 +39,7 @@
     <string name="decor_type_load_side">みちばた</string>
     <string name="decor_type_sushi_restaurant">お寿司やさん</string>
     <string name="decor_type_mountain">山</string>
+    <string name="decor_type_stadium">スタジアム</string>
     <string name="decor_type_weather">天気</string>
     <string name="decor_type_theme_park">テーマパーク</string>
     <string name="decor_type_bus_stop">バス停</string>
@@ -70,17 +71,24 @@
     <string name="costume_clover">クローバー</string>
     <string name="costume_four_leaf_clover">四つ葉のクローバー</string>
     <string name="costume_tiny_book">豆本</string>
-    <string name="costume_mario">マリオの帽子</string>
-    <string name="costume_new_year">旧正月の飾り</string>
-    <string name="costume_chess">チェスの駒</string>
     <string name="costume_sticker">シール</string>
     <string name="costume_sushi">お寿司</string>
     <string name="costume_mountain_pin_badge">山のバッジ</string>
+    <string name="costume_mountain_ball_keychain">ボールのキーホルダー</string>
     <string name="costume_leaf_hat">葉っぱの帽子</string>
     <string name="costume_theme_park_ticket">テーマパークチケット</string>
-    <string name="costume_theme_finger_board">フィンガーボード</string>
-    <string name="costume_theme_flower_card">花札</string>
-    <string name="costume_theme_jack_o_lantern">お化けかぼちゃ</string>
-    <string name="costume_theme_bus_parer_craft">バスのペーパークラフト</string>
-    <string name="costume_theme_first_anniversary_snack">1周年記念スナック</string>
+
+    <string name="costume_special_mario">マリオの帽子</string>
+    <string name="costume_special_new_year">旧正月の飾り 2022</string>
+    <string name="costume_special_chess">チェスの駒</string>
+    <string name="costume_special_finger_board">フィンガーボード</string>
+    <string name="costume_special_flower_card">花札</string>
+    <string name="costume_special_jack_o_lantern">お化けかぼちゃ</string>
+    <string name="costume_special_bus_parer_craft">バスのペーパークラフト</string>
+    <string name="costume_special_first_anniversary_snack">1周年記念スナック</string>
+    <string name="costume_special_koppaite_space_suit">コッパイ星人の宇宙服</string>
+    <string name="costume_special_mitten">手ぶくろ</string>
+    <string name="costume_special_2023_glasses">2023メガネ</string>
+    <string name="costume_special_new_year_2023">旧正月の飾り 2023</string>
+
 </resources>
