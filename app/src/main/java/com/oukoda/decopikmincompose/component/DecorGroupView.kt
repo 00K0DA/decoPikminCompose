@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -48,6 +49,10 @@ fun DecorGroupView(
 ) {
     var isExpand by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    var decorGroupInternal by remember {
+        mutableStateOf(decorGroup)
     }
 
     Column(
@@ -104,6 +109,12 @@ fun DecorGroupView(
                     CostumeGroupView(
                         pikminDataList,
                         onClick = { costumeType: CostumeType, pikminIdentifier: PikminIdentifier ->
+                            val newPikminIdentifiers =
+                                pikminDataList.updatePikminData(pikminIdentifier)
+                            decorGroupInternal =
+                                decorGroupInternal.updateCostumeGroup(
+                                    newPikminIdentifiers,
+                                )
                             onClick(
                                 pikminIdentifier.toPikminRecord(
                                     decorGroup.decorType,
