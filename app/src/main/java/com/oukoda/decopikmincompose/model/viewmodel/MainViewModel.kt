@@ -65,8 +65,8 @@ class MainViewModel(application: Application) : ViewModel() {
                     // recordsを反映させたcostumeGroupの作成
                     mutableCostumeGroups.add(
                         initialCostumeGroup.updateByPikminRecords(
-                            filteredRecords
-                        )
+                            filteredRecords,
+                        ),
                     )
                 }
 
