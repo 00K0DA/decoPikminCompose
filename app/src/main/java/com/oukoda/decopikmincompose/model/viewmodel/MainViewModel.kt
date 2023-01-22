@@ -100,7 +100,6 @@ class MainViewModel(application: Application) : ViewModel() {
             appDatabase.pikminRecordDao().update(pikminRecord)
         }
     }
-
     class MainViewModelFactory(private val application: Application) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
