@@ -1,9 +1,12 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
+import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
+import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.enumclass.CostumeType
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
+import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -11,84 +14,128 @@ import org.junit.Before
 import org.junit.Test
 
 class DecorGroupTest {
-    private lateinit var pikminIdentifierRed: PikminIdentifier
-    private lateinit var pikminIdentifierBlue: PikminIdentifier
-    private lateinit var costumeGroupAcornRed: CostumeGroup
-    private lateinit var costumeGroupAcornBlue: CostumeGroup
-    private lateinit var costumeGroupBaguetteRed: CostumeGroup
-    private lateinit var costumeGroupBaguetteBlue: CostumeGroup
+
+    private val decorType = DecorType.Forest
+    private val costumeType1 = CostumeType.Acorn
+    private val costumeType2 = CostumeType.StagBeetle
+    private lateinit var costumeGroup1: CostumeGroup
+    private lateinit var costumeGroup2: CostumeGroup
 
     @Before
     fun setUp() {
-        pikminIdentifierRed = PikminIdentifier.newInstance(PikminType.Red, 0)
-        pikminIdentifierBlue = PikminIdentifier.newInstance(PikminType.Blue, 0)
-        costumeGroupAcornRed = CostumeGroup(
-            CostumeType.Acorn,
-            listOf(pikminIdentifierRed),
-        )
-        costumeGroupAcornBlue = CostumeGroup(
-            CostumeType.Acorn,
-            listOf(pikminIdentifierBlue),
-        )
-
-        costumeGroupBaguetteRed = CostumeGroup(
-            CostumeType.Baguette,
-            listOf(pikminIdentifierRed),
-        )
-
-        costumeGroupBaguetteBlue = CostumeGroup(
-            CostumeType.Baguette,
-            listOf(pikminIdentifierBlue),
-        )
-    }
-
-    @Test
-    fun updatePikminIdentifiers() {
-        var decorGroup =
-            DecorGroup(DecorType.Airport, listOf(costumeGroupAcornRed, costumeGroupBaguetteRed))
-        decorGroup = decorGroup.updateCostumeGroup(costumeGroupAcornBlue)
-        decorGroup = decorGroup.updateCostumeGroup(costumeGroupBaguetteBlue)
-
-        decorGroup.forEach {
-            if (it.costumeType == CostumeType.Acorn) {
-                assertEquals(it, costumeGroupAcornBlue)
-            } else if (it.costumeType == CostumeType.Baguette) {
-                assertEquals(it, costumeGroupBaguetteBlue)
-            }
-        }
+        costumeGroup1 = CostumeGroup.newInstance(costumeType1)
+        costumeGroup2 = CostumeGroup.newInstance(costumeType2)
     }
 
     @Test
     fun isCompletedTrue() {
-        val pikminIdentifiers = (0..7).map {
-            pikminIdentifierRed.copy(number = it, pikminStatusType = PikminStatusType.AlreadyExists)
-        }
-        val costumeGroup = CostumeGroup(CostumeType.Acorn, pikminIdentifiers)
-        val decorGroup =
-            DecorGroup(DecorType.Airport, listOf(costumeGroup, costumeGroup, costumeGroup))
+        val costumeGroup1 = CostumeGroup(
+            costumeType1,
+            costumeGroup1.map {
+                it.copy(pikminStatusType = PikminStatusType.AlreadyExists)
+            },
+        )
+
+        val costumeGroup2 = CostumeGroup(
+            costumeType2,
+            costumeGroup2.map {
+                it.copy(pikminStatusType = PikminStatusType.AlreadyExists)
+            },
+        )
+
+        var decorGroup = DecorGroup(decorType, listOf(costumeGroup1))
+        assertTrue(decorGroup.isCompleted())
+
+        decorGroup = DecorGroup(decorType, listOf(costumeGroup1, costumeGroup2))
         assertTrue(decorGroup.isCompleted())
     }
 
     @Test
     fun isCompletedFalse() {
-        val decorType = DecorType.Airport
-        val costumeType = CostumeType.Acorn
-        val pikminIdentifiers = (0..7).map {
-            pikminIdentifierRed.copy(number = it, pikminStatusType = PikminStatusType.NotHave)
-        }
         // すべてNotHave
-        val costumeGroup = CostumeGroup(costumeType, pikminIdentifiers)
-        val decorGroup = DecorGroup(decorType, listOf(costumeGroup, costumeGroup, costumeGroup))
+        val decorGroup = DecorGroup(decorType, listOf(costumeGroup1, costumeGroup2))
         assertFalse(decorGroup.isCompleted())
 
         // 一つだけAlreadyExistsになっている場合
-        costumeGroup.applyPikminRecords(
+        costumeGroup1 = costumeGroup1.updateByPikminRecords(
             listOf(
-                costumeGroup.first().toPikminRecord(decorType, costumeType)
-                    .copy(pikminStatus = PikminStatusType.AlreadyExists),
+                PikminRecord(
+                    decorType,
+                    costumeType1,
+                    PikminType.Red,
+                    0,
+                    PikminStatusType.AlreadyExists,
+                ),
             ),
         )
-        decorGroup.updateCostumeGroup(costumeGroup)
+        decorGroup.updateCostumeGroup(costumeGroup1)
         assertFalse(decorGroup.isCompleted())
+    }
+
+    @Test
+    fun updatePikminIdentifiers() {
+        var decorGroup = DecorGroup(decorType, listOf(costumeGroup1, costumeGroup2))
+        assertFalse(decorGroup.isCompleted())
+        val costumeGroup1 = CostumeGroup(
+            costumeType1,
+            costumeGroup1.map {
+                it.copy(pikminStatusType = PikminStatusType.AlreadyExists)
+            },
+        )
+        decorGroup = decorGroup.updateCostumeGroup(costumeGroup1)
+
+        val costumeGroup2 = CostumeGroup(
+            costumeType2,
+            costumeGroup2.map {
+                it.copy(pikminStatusType = PikminStatusType.AlreadyExists)
+            },
+        )
+        decorGroup = decorGroup.updateCostumeGroup(costumeGroup2)
+        assertTrue(decorGroup.isCompleted())
+    }
+
+    @Test
+    fun getCountTest() {
+        var pikminCount = costumeGroup1.count()
+        var decorGroup = DecorGroup(DecorType.Forest, listOf(costumeGroup1))
+        assertEquals(pikminCount, decorGroup.getCount())
+
+        pikminCount = costumeGroup1.count() + costumeGroup2.count()
+        decorGroup = DecorGroup(DecorType.Forest, listOf(costumeGroup1, costumeGroup2))
+        assertEquals(pikminCount, decorGroup.getCount())
+    }
+
+    @Test
+    fun getHaveCountTest() {
+        var decorGroup =
+            DecorGroup(decorType, listOf(costumeGroup1, costumeGroup2))
+        assertEquals(0, decorGroup.getHaveCount())
+        costumeGroup1 = costumeGroup1.updateByPikminRecords(
+            listOf(
+                PikminRecord(
+                    decorType,
+                    costumeType1,
+                    PikminType.Red,
+                    0,
+                    PikminStatusType.AlreadyExists,
+                ),
+            ),
+        )
+        decorGroup = decorGroup.updateCostumeGroup(costumeGroup1)
+        assertEquals(1, decorGroup.getHaveCount())
+
+        costumeGroup2 = costumeGroup2.updateByPikminRecords(
+            listOf(
+                PikminRecord(
+                    decorType,
+                    costumeType2,
+                    PikminType.Red,
+                    0,
+                    PikminStatusType.AlreadyExists,
+                ),
+            ),
+        )
+        decorGroup = decorGroup.updateCostumeGroup(costumeGroup2)
+        assertEquals(2, decorGroup.getHaveCount())
     }
 }

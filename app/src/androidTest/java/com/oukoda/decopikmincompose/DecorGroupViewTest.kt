@@ -64,7 +64,7 @@ class DecorGroupViewTest {
                     for (cg in decorGroup) {
                         if (cg.costumeType == it.costumeType) {
                             decorGroup =
-                                decorGroup.updateCostumeGroup(cg.applyPikminRecords(listOf(it)))
+                                decorGroup.updateCostumeGroup(cg.updateByPikminRecords(listOf(it)))
                             break
                         }
                     }
@@ -89,6 +89,13 @@ class DecorGroupViewTest {
         (0..tapCount).forEach { _ ->
             pikminIdentifierViews.random().performClick()
             composeTestRule.waitForIdle()
+
+            composeTestRule.onNodeWithText(
+                "%d/%d".format(
+                    decorGroup.getHaveCount(),
+                    decorGroup.getCount(),
+                ),
+            ).assertExists()
 
             if (decorGroup.isCompleted()) {
                 composeTestRule

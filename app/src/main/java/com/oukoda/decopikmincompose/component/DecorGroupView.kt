@@ -8,6 +8,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,7 +48,7 @@ fun DecorGroupView(
         mutableStateOf(false)
     }
 
-    var pikminCostumeListInternal by remember {
+    var decorGroupInternal by remember {
         mutableStateOf(decorGroup)
     }
 
@@ -63,7 +64,7 @@ fun DecorGroupView(
                 .clip(RoundedCornerShape(24.dp))
                 .border(
                     width = 2.dp,
-                    color = if (pikminCostumeListInternal.isCompleted()) completeColor else progressColor,
+                    color = if (decorGroupInternal.isCompleted()) completeColor else progressColor,
                     shape = RoundedCornerShape(24.dp),
                 )
                 .clickable { isExpand = !isExpand }
@@ -71,7 +72,15 @@ fun DecorGroupView(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                stringResource(id = pikminCostumeListInternal.decorType.stringId()),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterEnd)
+                    .padding(end = 16.dp),
+                text = "%d/%d".format(decorGroupInternal.getHaveCount(), decorGroup.getCount()),
+                fontSize = 16.sp,
+            )
+            Text(
+                modifier = Modifier.align(alignment = Alignment.Center),
+                text = stringResource(id = decorGroupInternal.decorType.stringId()),
                 fontSize = 20.sp,
             )
         }
@@ -87,15 +96,19 @@ fun DecorGroupView(
             ),
             exit = shrinkVertically(),
         ) {
-            Column {
-                pikminCostumeListInternal.forEach { pikminDataList ->
+            Column(
+                modifier =
+                Modifier.padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                decorGroupInternal.forEach { pikminDataList ->
                     CostumeGroupView(
                         pikminDataList,
                         onClick = { costumeType: CostumeType, pikminIdentifier: PikminIdentifier ->
                             val newPikminIdentifiers =
                                 pikminDataList.updatePikminData(pikminIdentifier)
-                            pikminCostumeListInternal =
-                                pikminCostumeListInternal.updateCostumeGroup(
+                            decorGroupInternal =
+                                decorGroupInternal.updateCostumeGroup(
                                     newPikminIdentifiers,
                                 )
                             onClick(
