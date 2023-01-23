@@ -2,7 +2,7 @@ package com.oukoda.decopikmincompose.model.enumclass
 
 import com.oukoda.decopikmincompose.R
 
-enum class DecorType() {
+enum class DecorType {
     Restaurant,
     Cafe,
     Sweetshop,
@@ -33,7 +33,7 @@ enum class DecorType() {
     BusStop,
     ;
 
-    fun getCostumes(): List<CostumeType> = when (this) {
+    fun costumeTypes(): List<CostumeType> = when (this) {
         Restaurant -> listOf(CostumeType.Chef, CostumeType.ShinyChef)
         Cafe -> listOf(CostumeType.CoffeeCup)
         Sweetshop -> listOf(CostumeType.Macaron)
@@ -73,7 +73,7 @@ enum class DecorType() {
         BusStop -> listOf(CostumeType.BusPaperCraft)
     }
 
-    fun getDecorText(): Int = when (this) {
+    fun stringId(): Int = when (this) {
         Restaurant -> R.string.decor_type_restaurant
         Cafe -> R.string.decor_type_cafe
         Sweetshop -> R.string.decor_type_sweetshop

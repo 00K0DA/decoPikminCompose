@@ -71,7 +71,7 @@ fun DecorGroupView(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                stringResource(id = pikminCostumeListInternal.decorType.getDecorText()),
+                stringResource(id = pikminCostumeListInternal.decorType.stringId()),
                 fontSize = 20.sp,
             )
         }
@@ -116,11 +116,11 @@ fun DecorGroupView(
 @Composable
 private fun PikminDecorViewPreview() {
     val decorType: DecorType = DecorType.Restaurant
-    val pikminIdentifierLists = decorType.getCostumes().map { costumeType ->
+    val pikminIdentifierLists = decorType.costumeTypes().map { costumeType ->
         CostumeGroup(
             costumeType = costumeType,
             pikminIdentifiers =
-            costumeType.getPikminList().map { pikminType ->
+            costumeType.pikminTypes().map { pikminType ->
                 PikminIdentifier.newInstance(pikminType, 0)
             },
         )

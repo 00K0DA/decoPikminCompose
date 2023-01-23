@@ -6,23 +6,23 @@ import org.junit.Test
 class DecorTypeTest {
     @Test
     fun isTextIdUnique() {
-        val stringIdList: List<Int> = DecorType.values().map {
-            it.getDecorText()
+        val stringIds: List<Int> = DecorType.values().map {
+            it.stringId()
         }
 
-        stringIdList.forEach { stringId ->
-            val stringIdCount = stringIdList.count { it == stringId }
+        stringIds.forEach { stringId ->
+            val stringIdCount = stringIds.count { it == stringId }
             assertEquals(1, stringIdCount)
         }
     }
 
     @Test
     fun isCostumeUnique() {
-        val allCostumeList: List<CostumeType> = DecorType.values().map {
-            it.getCostumes()
+        val allCostumes: List<CostumeType> = DecorType.values().map {
+            it.costumeTypes()
         }.flatten()
-        allCostumeList.forEach { costumeType ->
-            val costumeCount = allCostumeList.count { it == costumeType }
+        allCostumes.forEach { costumeType ->
+            val costumeCount = allCostumes.count { it == costumeType }
             assertEquals(1, costumeCount)
         }
     }

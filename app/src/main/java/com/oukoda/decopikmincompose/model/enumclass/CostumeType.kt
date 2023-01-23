@@ -2,7 +2,7 @@ package com.oukoda.decopikmincompose.model.enumclass
 
 import com.oukoda.decopikmincompose.R
 
-enum class CostumeType() {
+enum class CostumeType {
     Chef,
     ShinyChef,
     CoffeeCup,
@@ -55,10 +55,10 @@ enum class CostumeType() {
     ;
 
     companion object {
-        fun getAllPikminCount(): Int = values().sumOf { it.getPikminList().size }
+        fun getAllPikminCount(): Int = values().sumOf { it.pikminTypes().size }
     }
 
-    fun getPikminList(): List<PikminType> {
+    fun pikminTypes(): List<PikminType> {
         return when (this) {
             Mario -> listOf(PikminType.Red)
             Chess ->
@@ -74,7 +74,7 @@ enum class CostumeType() {
         }
     }
 
-    fun getCostumeTextId(): Int {
+    fun stringId(): Int {
         return when (this) {
             Chef -> R.string.costume_chef
             ShinyChef -> R.string.costume_shiny_chef
