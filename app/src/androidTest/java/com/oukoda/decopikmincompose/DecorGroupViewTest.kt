@@ -1,6 +1,10 @@
 package com.oukoda.decopikmincompose
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
@@ -60,11 +64,16 @@ class DecorGroupViewTest {
         var decorGroup = initialDecorGroup
         composeTestRule.setContent {
             DecoPikminComposeTheme {
-                DecorGroupView(decorGroup = decorGroup) {
-                    for (cg in decorGroup) {
-                        if (cg.costumeType == it.costumeType) {
-                            decorGroup =
-                                decorGroup.updateCostumeGroup(cg.updateByPikminRecords(listOf(it)))
+                var rememberDecorGroup by remember {
+                    mutableStateOf(decorGroup)
+                }
+                DecorGroupView(decorGroup = rememberDecorGroup) {
+                    for (costumeGroup in decorGroup) {
+                        if (costumeGroup.costumeType == it.costumeType) {
+                            val updateCostumeGroup = costumeGroup.updateByPikminRecords(listOf(it))
+                            decorGroup = decorGroup.updateCostumeGroup(updateCostumeGroup)
+                            rememberDecorGroup =
+                                rememberDecorGroup.updateCostumeGroup(updateCostumeGroup)
                             break
                         }
                     }
