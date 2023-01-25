@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oukoda.decopikmincompose.R
 import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
@@ -52,15 +54,20 @@ fun AllPikminInfoView(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             InfoRowWithText(
-                label = "所持数: ",
-                data = "%d/%d".format(alreadyHaveCount, allPikminCount),
+                label = stringResource(id = R.string.all_pikmin_info_view_have_count_title),
+                value = stringResource(id = R.string.all_pikmin_info_view_have_count).format(
+                    alreadyHaveCount,
+                    allPikminCount,
+                ),
             )
             InfoRowWithText(
-                label = "所持率: ",
-                data = "%.2f".format(haveCountPercentage),
+                label = stringResource(id = R.string.all_pikmin_info_view_have_percent_title),
+                value = stringResource(id = R.string.all_pikmin_info_view_have_percent).format(
+                    haveCountPercentage,
+                ),
             )
             InfoRowWithCheckbox(
-                label = "コンプ済みは表示しない",
+                label = stringResource(id = R.string.all_pikmin_info_view_show_complete_decor_title),
                 isSelected = showCompleteDecorType,
                 onChanged = { onChanged(it) },
             )
@@ -69,8 +76,8 @@ fun AllPikminInfoView(
 }
 
 @Composable
-private fun InfoRowWithText(label: String, data: String) {
-    InfoRowInternal(label = label, valueWidget = { Text(text = data) })
+private fun InfoRowWithText(label: String, value: String) {
+    InfoRowInternal(label = label, valueWidget = { Text(text = value) })
 }
 
 @Composable

@@ -41,74 +41,71 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val owner = LocalViewModelStoreOwner.current
-
-            owner?.let {
-                val mainViewModel: MainViewModel = viewModel(
-                    it,
-                    "MainViewModel",
-                    MainViewModel.MainViewModelFactory(
-                        LocalContext.current.applicationContext as Application,
-                    ),
-                )
-                MainScreen(mainViewModel)
-            }
+            val owner = LocalViewModelStoreOwner.current!!
+            val mainViewModel: MainViewModel = viewModel(
+                owner,
+                "MainViewModel",
+                MainViewModel.MainViewModelFactory(
+                    LocalContext.current.applicationContext as Application,
+                ),
+            )
+            mainViewModel.createDecors()
+            MainScreen(mainViewModel)
         }
     }
+}
 
-    @Composable
-    fun MainScreen(mainViewModel: MainViewModel) {
-        val decors by mainViewModel.decorGroups.collectAsState()
-        mainViewModel.createDecors()
-        val isLoading = mainViewModel.isLoading.observeAsState().value!!
-        DecoPikminComposeTheme {
-            // A surface container using the 'background' color from the theme
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colors.background,
-            ) {
-                Box() {
-                    CreatePikminDecorView(decors) { pikminRecord ->
-                        mainViewModel.updatePikminRecord(pikminRecord)
-                    }
-
-                    AnimatedVisibility(
-                        visible = isLoading,
-                        exit = fadeOut(),
-                    ) {
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                                .background(Color.DarkGray.copy(alpha = 0.9F)),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(text = "Loading", color = Color.White)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    @VisibleForTesting
-    private fun CreatePikminDecorView(
-        decors: List<DecorGroup>,
-        onClick: (pikminRecord: PikminRecord) -> Unit,
-    ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+@Composable
+fun MainScreen(mainViewModel: MainViewModel) {
+    val decors by mainViewModel.decorGroups.collectAsState()
+    val isLoading = mainViewModel.isLoading.observeAsState().value!!
+    DecoPikminComposeTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background,
         ) {
-            itemsIndexed(decors) { index, decor ->
-                if (index == 0) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    AllPikminInfoView(allDecorGroups = decors, showCompleteDecorType = true) {}
-                    Spacer(modifier = Modifier.height(16.dp))
+            Box() {
+                CreatePikminDecorView(decors) { pikminRecord ->
+                    mainViewModel.updatePikminRecord(pikminRecord)
                 }
-                DecorGroupView(decor, onClick)
-                if (index == decors.size - 1) {
-                    Spacer(modifier = Modifier.height(16.dp))
+
+                AnimatedVisibility(
+                    visible = isLoading,
+                    exit = fadeOut(),
+                ) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .background(Color.DarkGray.copy(alpha = 0.9F)),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(text = "Loading", color = Color.White)
+                    }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+@VisibleForTesting
+private fun CreatePikminDecorView(
+    decors: List<DecorGroup>,
+    onClick: (pikminRecord: PikminRecord) -> Unit,
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        itemsIndexed(decors) { index, decor ->
+            if (index == 0) {
+                Spacer(modifier = Modifier.height(16.dp))
+                AllPikminInfoView(allDecorGroups = decors, showCompleteDecorType = true) {}
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            DecorGroupView(decor, onClick)
+            if (index == decors.size - 1) {
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
