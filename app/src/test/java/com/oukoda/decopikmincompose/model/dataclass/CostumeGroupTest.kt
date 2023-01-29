@@ -125,7 +125,7 @@ class CostumeGroupTest {
             prTemplate.copy(pikminType = it, pikminStatus = PikminStatusType.AlreadyExists)
         }
 
-        val newCostumeGroup = oldCostumeGroup.applyPikminRecords(pikminRecords)
+        val newCostumeGroup = oldCostumeGroup.updateByPikminRecords(pikminRecords)
 
         newCostumeGroup.forEach {
             assertEquals(PikminStatusType.AlreadyExists, it.pikminStatusType)

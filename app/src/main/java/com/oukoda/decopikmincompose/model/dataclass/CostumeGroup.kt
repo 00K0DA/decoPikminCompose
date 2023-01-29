@@ -74,7 +74,7 @@ class CostumeGroup(
         return Pair(insertRecords.toList(), deleteRecords.toList())
     }
 
-    fun applyPikminRecords(pikminRecords: List<PikminRecord>): CostumeGroup {
+    fun updateByPikminRecords(pikminRecords: List<PikminRecord>): CostumeGroup {
         val mutablePikminIdentifiers = pikminIdentifiers.toMutableList()
         pikminRecords.forEach { record ->
             for (index in mutablePikminIdentifiers.indices) {

@@ -26,7 +26,7 @@ fun CostumeGroupView(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stringResource(id = R.string.pikmin_list_view_status).format(

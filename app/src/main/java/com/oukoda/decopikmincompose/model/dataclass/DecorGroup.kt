@@ -33,6 +33,10 @@ class DecorGroup(
         return true
     }
 
+    fun getCount() = costumeGroups.sumOf { it.count() }
+
+    fun getHaveCount() = costumeGroups.sumOf { it.getHaveCount() }
+
     override fun contains(element: CostumeGroup): Boolean {
         return costumeGroups.contains(element)
     }
