@@ -33,6 +33,9 @@ enum class CostumeType {
     Sushi,
     MountainPinBadge,
 
+    // Stadium
+    BallKeyChain,
+
     // Weather
     LeafHat,
 
@@ -50,6 +53,10 @@ enum class CostumeType {
     FlowerCard,
     JackOLantern,
     FirstAnniversary,
+    KoppaiteSpaceSuit,
+    Mitten,
+    Glasses2023,
+    NewYear2023,
 
     ThemeParkTicket,
     ;
@@ -64,7 +71,16 @@ enum class CostumeType {
             Chess ->
                 listOf(PikminType.Yellow, PikminType.Blue, PikminType.White, PikminType.Purple)
             LeafHat -> listOf(PikminType.Blue, PikminType.Blue, PikminType.Blue)
-            ShinyChef, NewYear, MountainPinBadge, Sushi, ThemeParkTicket ->
+            ShinyChef,
+            NewYear,
+            MountainPinBadge,
+            Sushi,
+            ThemeParkTicket,
+            BallKeyChain,
+            KoppaiteSpaceSuit,
+            Mitten,
+            NewYear2023,
+            ->
                 listOf(PikminType.Red, PikminType.Blue, PikminType.Yellow)
             FingerBoard ->
                 listOf(PikminType.Red, PikminType.Yellow, PikminType.Purple, PikminType.Wing)
@@ -105,17 +121,22 @@ enum class CostumeType {
             TinyBook -> R.string.costume_tiny_book
             Sushi -> R.string.costume_sushi
             MountainPinBadge -> R.string.costume_mountain_pin_badge
+            BallKeyChain -> R.string.costume_mountain_ball_keychain
             LeafHat -> R.string.costume_leaf_hat
             Sticker -> R.string.costume_sticker
-            Mario -> R.string.costume_mario
-            NewYear -> R.string.costume_new_year
-            Chess -> R.string.costume_chess
+            Mario -> R.string.costume_special_mario
+            NewYear -> R.string.costume_special_new_year
+            Chess -> R.string.costume_special_chess
             ThemeParkTicket -> R.string.costume_theme_park_ticket
-            FingerBoard -> R.string.costume_theme_finger_board
-            FlowerCard -> R.string.costume_theme_flower_card
-            JackOLantern -> R.string.costume_theme_jack_o_lantern
-            BusPaperCraft -> R.string.costume_theme_bus_parer_craft
-            FirstAnniversary -> R.string.costume_theme_first_anniversary_snack
+            FingerBoard -> R.string.costume_special_finger_board
+            FlowerCard -> R.string.costume_special_flower_card
+            JackOLantern -> R.string.costume_special_jack_o_lantern
+            BusPaperCraft -> R.string.costume_special_bus_parer_craft
+            FirstAnniversary -> R.string.costume_special_first_anniversary_snack
+            KoppaiteSpaceSuit -> R.string.costume_special_koppaite_space_suit
+            Mitten -> R.string.costume_special_mitten
+            Glasses2023 -> R.string.costume_special_2023_glasses
+            NewYear2023 -> R.string.costume_special_new_year_2023
         }
     }
 }

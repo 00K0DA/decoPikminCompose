@@ -28,6 +28,7 @@ enum class DecorType {
     LoadSide,
     SushiRestaurant,
     Mountain,
+    Stadium,
     Weather,
     ThemePark,
     BusStop,
@@ -59,11 +60,15 @@ enum class DecorType {
             listOf(
                 CostumeType.Mario,
                 CostumeType.NewYear,
+                CostumeType.NewYear2023,
                 CostumeType.Chess,
                 CostumeType.FingerBoard,
                 CostumeType.FlowerCard,
                 CostumeType.JackOLantern,
                 CostumeType.FirstAnniversary,
+                CostumeType.KoppaiteSpaceSuit,
+                CostumeType.Mitten,
+                CostumeType.Glasses2023,
             )
         LoadSide -> listOf(CostumeType.Sticker)
         SushiRestaurant -> listOf(CostumeType.Sushi)
@@ -71,6 +76,7 @@ enum class DecorType {
         Weather -> listOf(CostumeType.LeafHat)
         ThemePark -> listOf(CostumeType.ThemeParkTicket)
         BusStop -> listOf(CostumeType.BusPaperCraft)
+        Stadium -> listOf(CostumeType.BallKeyChain)
     }
 
     fun stringId(): Int = when (this) {
@@ -99,6 +105,7 @@ enum class DecorType {
         LoadSide -> R.string.decor_type_load_side
         SushiRestaurant -> R.string.decor_type_sushi_restaurant
         Mountain -> R.string.decor_type_mountain
+        Stadium -> R.string.decor_type_stadium
         Weather -> R.string.decor_type_weather
         ThemePark -> R.string.decor_type_theme_park
         BusStop -> R.string.decor_type_bus_stop
