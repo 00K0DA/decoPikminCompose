@@ -13,6 +13,7 @@ import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : ViewModel() {
@@ -62,7 +63,11 @@ class MainViewModel(application: Application) : ViewModel() {
                     }
 
                     // recordsを反映させたcostumeGroupの作成
-                    mutableCostumeGroups.add(initialCostumeGroup.updateByPikminRecords(filteredRecords))
+                    mutableCostumeGroups.add(
+                        initialCostumeGroup.updateByPikminRecords(
+                            filteredRecords,
+                        ),
+                    )
                 }
 
                 val decorGroup = DecorGroup(
@@ -82,9 +87,22 @@ class MainViewModel(application: Application) : ViewModel() {
 
     fun updatePikminRecord(pikminRecord: PikminRecord) {
         viewModelScope.launch(Dispatchers.IO) {
+            _decorGroups.update { groups ->
+                groups.map {
+                    if (it.decorType == pikminRecord.decorType) {
+                        var costumeGroup =
+                            it.first { costumeGroup -> costumeGroup.costumeType == pikminRecord.costumeType }
+                        costumeGroup = costumeGroup.updateByPikminRecords(listOf(pikminRecord))
+                        it.updateCostumeGroup(costumeGroup)
+                    } else {
+                        it
+                    }
+                }
+            }
             appDatabase.pikminRecordDao().update(pikminRecord)
         }
     }
+
     class MainViewModelFactory(private val application: Application) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
