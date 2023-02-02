@@ -29,7 +29,7 @@ class DecorGroupViewTest {
             CostumeGroup.newInstance(costumeType)
         }
         val decorGroup = DecorGroup(decorType, costumeGroups)
-        val tapCount = decorGroup.sumOf { it.count() } * 5
+        val tapCount = decorGroup.sumOf { it.count() } * 2
         clickPikminIdentifierTest(decorGroup, tapCount)
     }
 
@@ -41,7 +41,7 @@ class DecorGroupViewTest {
             CostumeGroup.newInstance(costumeType)
         }
         val decorGroup = DecorGroup(decorType, costumeGroups)
-        val tapCount = decorGroup.sumOf { it.count() } * 5
+        val tapCount = decorGroup.sumOf { it.count() } * 2
         clickPikminIdentifierTest(decorGroup, tapCount)
     }
 
@@ -52,7 +52,7 @@ class DecorGroupViewTest {
             CostumeGroup.newInstance(costumeType)
         }
         val decorGroup = DecorGroup(decorType, costumeGroups)
-        val tapCount = decorGroup.sumOf { it.count() } * 5
+        val tapCount = decorGroup.sumOf { it.count() } * 2
         clickPikminIdentifierTest(DecorGroup(decorType, costumeGroups), tapCount)
     }
 
@@ -85,6 +85,12 @@ class DecorGroupViewTest {
                 views[index]
             }
         }.flatten()
+
+        (0..2).forEach { _ ->
+            pikminIdentifierViews.forEach { node ->
+                node.performClick()
+            }
+        }
 
         (0..tapCount).forEach { _ ->
             pikminIdentifierViews.random().performClick()

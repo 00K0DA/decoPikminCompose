@@ -1,7 +1,8 @@
 package com.oukoda.decopikmincompose.model.viewmodel
 
 import android.app.Application
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,8 @@ class MainViewModel(application: Application) : ViewModel() {
 
     private val _decorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())
     val decorGroups: StateFlow<List<DecorGroup>> = _decorGroups
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
     private var appDatabase: AppDatabase
 
     init {
@@ -33,25 +36,17 @@ class MainViewModel(application: Application) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val pikminRecordDao = appDatabase.pikminRecordDao()
             for (decorType in DecorType.values()) {
-                Log.d(TAG, "createDecors: $decorType")
                 // PikminRecordをDecorTypeごとに取得
                 val pikminRecords = pikminRecordDao.selectByDecorType(decorType)
-                Log.d(TAG, "createDecors: $pikminRecords")
                 val mutableCostumeGroups: MutableList<CostumeGroup> = mutableListOf()
                 // Costumeごとに処理を行う
                 for (costumeType in decorType.costumeTypes()) {
                     val filteredRecords = pikminRecords.filter { it.costumeType == costumeType }
-                    Log.d(TAG, "createDecors: filteredRecords:$filteredRecords")
                     val initialCostumeGroup = CostumeGroup.newInstance(costumeType)
-                    initialCostumeGroup.forEach {
-                        Log.d(TAG, "createDecors: initialCostumeGroup: $it")
-                    }
                     val (insertRecords, deleteRecords) = initialCostumeGroup.compareToPikminRecords(
                         decorType,
                         filteredRecords,
                     )
-                    Log.d(TAG, "createDecors: insertRecords: $insertRecords")
-                    Log.d(TAG, "createDecors: deleteRecords: $deleteRecords")
                     // 不足しているデータをDBに追加
                     for (record in insertRecords) {
                         pikminRecordDao.insert(record)
@@ -81,6 +76,9 @@ class MainViewModel(application: Application) : ViewModel() {
                 viewModelScope.launch(Dispatchers.Main) {
                     _decorGroups.value = mutableDecorGroups.toList()
                 }.join()
+            }
+            viewModelScope.launch(Dispatchers.Main) {
+                _isLoading.value = false
             }
         }
     }
