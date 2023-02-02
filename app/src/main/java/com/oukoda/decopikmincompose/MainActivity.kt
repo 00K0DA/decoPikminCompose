@@ -10,12 +10,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -31,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.oukoda.decopikmincompose.component.AllPikminInfoView
 import com.oukoda.decopikmincompose.component.DecorGroupView
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
@@ -68,12 +68,8 @@ class MainActivity : ComponentActivity() {
                 color = MaterialTheme.colors.background,
             ) {
                 Box() {
-                    Column {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        CreatePikminDecorView(decors) { pikminRecord ->
-                            mainViewModel.updatePikminRecord(pikminRecord)
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
+                    CreatePikminDecorView(decors) { pikminRecord ->
+                        mainViewModel.updatePikminRecord(pikminRecord)
                     }
 
                     AnimatedVisibility(
@@ -103,8 +99,16 @@ class MainActivity : ComponentActivity() {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            items(decors) { decor ->
+            itemsIndexed(decors) { index, decor ->
+                if (index == 0) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    AllPikminInfoView(allDecorGroups = decors, showCompleteDecorType = true) {}
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
                 DecorGroupView(decor, onClick)
+                if (index == decors.size - 1) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }

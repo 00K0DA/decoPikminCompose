@@ -6,6 +6,7 @@ import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,12 +20,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
@@ -49,10 +50,6 @@ fun DecorGroupView(
         mutableStateOf(false)
     }
 
-    var decorGroupInternal by remember {
-        mutableStateOf(decorGroup)
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,9 +62,10 @@ fun DecorGroupView(
                 .clip(RoundedCornerShape(24.dp))
                 .border(
                     width = 2.dp,
-                    color = if (decorGroupInternal.isCompleted()) completeColor else progressColor,
+                    color = Color.Gray,
                     shape = RoundedCornerShape(24.dp),
                 )
+                .background(if (decorGroup.isCompleted()) completeColor else progressColor)
                 .clickable { isExpand = !isExpand }
                 .height(48.dp),
             contentAlignment = Alignment.Center,
@@ -76,12 +74,12 @@ fun DecorGroupView(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterEnd)
                     .padding(end = 16.dp),
-                text = "%d/%d".format(decorGroupInternal.getHaveCount(), decorGroup.getCount()),
+                text = "%d/%d".format(decorGroup.getHaveCount(), decorGroup.getCount()),
                 fontSize = 16.sp,
             )
             Text(
                 modifier = Modifier.align(alignment = Alignment.Center),
-                text = stringResource(id = decorGroupInternal.decorType.stringId()),
+                text = stringResource(id = decorGroup.decorType.stringId()),
                 fontSize = 20.sp,
             )
         }
@@ -102,16 +100,10 @@ fun DecorGroupView(
                 Modifier.padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                decorGroupInternal.forEach { pikminDataList ->
+                decorGroup.forEach { pikminDataList ->
                     CostumeGroupView(
                         pikminDataList,
                         onClick = { costumeType: CostumeType, pikminIdentifier: PikminIdentifier ->
-                            val newPikminIdentifiers =
-                                pikminDataList.updatePikminData(pikminIdentifier)
-                            decorGroupInternal =
-                                decorGroupInternal.updateCostumeGroup(
-                                    newPikminIdentifiers,
-                                )
                             onClick(
                                 pikminIdentifier.toPikminRecord(
                                     decorGroup.decorType,
