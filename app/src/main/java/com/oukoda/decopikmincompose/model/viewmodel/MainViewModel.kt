@@ -1,6 +1,7 @@
 package com.oukoda.decopikmincompose.model.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,6 +34,9 @@ class MainViewModel(application: Application) : ViewModel() {
     }
 
     fun createDecors() {
+        if (decorGroups.value.isNotEmpty()) {
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             val pikminRecordDao = appDatabase.pikminRecordDao()
             for (decorType in DecorType.values()) {
@@ -77,6 +81,7 @@ class MainViewModel(application: Application) : ViewModel() {
                     _decorGroups.value = mutableDecorGroups.toList()
                 }.join()
             }
+            Log.d(TAG, "createDecors: ${_decorGroups.value.size}")
             viewModelScope.launch(Dispatchers.Main) {
                 _isLoading.value = false
             }

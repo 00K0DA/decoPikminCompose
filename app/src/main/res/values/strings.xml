@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">decoPikminCompose</string>
     <string name="pikmin_list_view_status">%s(%d/%d)</string>
+    <string name="all_pikmin_info_view_have_count_title">所持数: </string>
+    <string name="all_pikmin_info_view_have_count">%d/%d</string>
+    <string name="all_pikmin_info_view_have_percent_title">所持率: </string>
+    <string name="all_pikmin_info_view_have_percent">%.2f</string>
+    <string name="all_pikmin_info_view_show_complete_decor_title">コンプ済みは表示しない: </string>
 
     <string name="pikmin_type_red">赤</string>
     <string name="pikmin_type_blue">青</string>
