@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Checkbox
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -66,7 +66,7 @@ fun AllPikminInfoView(
                     haveCountPercentage,
                 ),
             )
-            InfoRowWithCheckbox(
+            InfoRowWithSwitch(
                 label = stringResource(id = R.string.all_pikmin_info_view_show_complete_decor_title),
                 isSelected = showCompleteDecorType,
                 onChanged = { onChanged(it) },
@@ -81,7 +81,7 @@ private fun InfoRowWithText(label: String, value: String) {
 }
 
 @Composable
-private fun InfoRowWithCheckbox(
+private fun InfoRowWithSwitch(
     label: String,
     isSelected: Boolean,
     onChanged: (isSelected: Boolean) -> Unit,
@@ -89,7 +89,7 @@ private fun InfoRowWithCheckbox(
     InfoRowInternal(
         label = label,
         valueWidget = {
-            Checkbox(
+            Switch(
                 modifier = Modifier.height(4.dp),
                 checked = isSelected,
                 onCheckedChange = {
