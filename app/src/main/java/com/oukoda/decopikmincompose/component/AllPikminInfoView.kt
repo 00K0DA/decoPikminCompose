@@ -35,7 +35,7 @@ fun AllPikminInfoView(
 ) {
     val allPikminCount = allDecorGroups.sumOf { it.getCount() }
     val alreadyHaveCount = allDecorGroups.sumOf { it.getHaveCount() }
-    val haveCountPercentage: Float = alreadyHaveCount.toFloat() / allPikminCount
+    val haveCountPercentage: Float = alreadyHaveCount.toFloat() * 100 / allPikminCount
     Box(
         Modifier
             .clip(RoundedCornerShape(24.dp))
