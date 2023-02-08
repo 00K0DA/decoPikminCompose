@@ -1,21 +1,26 @@
 package com.oukoda.decopikmincompose.component
 
+import android.media.Image
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,13 +30,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.oukoda.decopikmincompose.R
 import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
@@ -61,34 +68,11 @@ fun DecorGroupView(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .border(
-                    width = 2.dp,
-                    color = Color.Gray,
-                    shape = RoundedCornerShape(24.dp),
-                )
-                .background(if (decorGroup.isCompleted()) completeColor else progressColor)
-                .clickable { isExpand = !isExpand }
-                .height(48.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterEnd)
-                    .padding(end = 16.dp),
-                text = "%d/%d".format(decorGroup.getHaveCount(), decorGroup.getCount()),
-                fontSize = 16.sp,
-            )
-            Text(
-                modifier = Modifier.align(alignment = Alignment.Center),
-                text = stringResource(id = decorGroup.decorType.stringId()),
-                fontSize = 20.sp,
-            )
+        DecorTitleView(decorGroupInternal, isExpand) {
+            isExpand = !isExpand
         }
         AnimatedVisibility(
+            modifier = Modifier.padding(horizontal = 4.dp),
             visible = isExpand,
             enter = expandVertically(
                 expandFrom = Alignment.Top,
@@ -100,30 +84,84 @@ fun DecorGroupView(
             ),
             exit = shrinkVertically(),
         ) {
-            Column(
-                modifier =
-                Modifier.padding(top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                decorGroup.forEach { pikminDataList ->
-                    CostumeGroupView(
-                        pikminDataList,
-                        onClick = { costumeType: CostumeType, pikminIdentifier: PikminIdentifier ->
-                            val newPikminIdentifiers =
-                                pikminDataList.updatePikminData(pikminIdentifier)
-                            decorGroupInternal =
-                                decorGroupInternal.updateCostumeGroup(
-                                    newPikminIdentifiers,
-                                )
-                            onClick(
-                                pikminIdentifier.toPikminRecord(
-                                    decorGroup.decorType,
-                                    costumeType,
-                                ),
-                            )
-                        },
-                    )
-                }
+            CostumeGroupViewHolder(decorGroup = decorGroupInternal) { pikminRecord: PikminRecord, newCostumeGroup: CostumeGroup ->
+                decorGroupInternal = decorGroupInternal.updateCostumeGroup(newCostumeGroup)
+                onClick(pikminRecord)
+            }
+        }
+    }
+}
+
+@Composable
+private fun DecorTitleView(
+    decorGroup: DecorGroup,
+    isExpand: Boolean,
+    onClick: () -> Unit,
+) {
+    val imageId = if (isExpand) R.drawable.expand_less else R.drawable.expand_more
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .clickable { onClick() },
+        elevation = 8.dp,
+    ) {
+        Box {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(16.dp)
+                        .background(if (decorGroup.isCompleted()) completeColor else progressColor),
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 4.dp),
+                    text = "%d/%d".format(decorGroup.getHaveCount(), decorGroup.getCount()),
+                    fontSize = 16.sp,
+                )
+            }
+            Text(
+                modifier = Modifier
+                    .align(Alignment.Center),
+                text = stringResource(id = decorGroup.decorType.stringId()),
+                fontSize = 20.sp,
+            )
+            Image(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 8.dp),
+                painter = painterResource(id = imageId),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary),
+            )
+        }
+    }
+}
+
+@Composable
+private fun CostumeGroupViewHolder(
+    decorGroup: DecorGroup,
+    onClick: (pikminRecord: PikminRecord, updateCostumeGroup: CostumeGroup) -> Unit,
+) {
+    Card(
+        elevation = 2.dp,
+        modifier = Modifier.padding(top = 8.dp),
+    ) {
+        Column(
+            modifier = Modifier.padding(vertical = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            decorGroup.forEach { pikminIdentifiers ->
+                CostumeGroupView(
+                    pikminIdentifiers,
+                    onClick = { costumeType: CostumeType, pikminIdentifier: PikminIdentifier ->
+                        val pikminRecord =
+                            pikminIdentifier.toPikminRecord(decorGroup.decorType, costumeType)
+                        val newCostumeGroup = pikminIdentifiers.updatePikminData(pikminIdentifier)
+                        onClick(pikminRecord, newCostumeGroup)
+                    },
+                )
             }
         }
     }
