@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(mainViewModel: MainViewModel) {
     val decors by mainViewModel.decorGroups.collectAsState()
     val isLoading = mainViewModel.isLoading.observeAsState().value!!
+    val showCompleteDecor = mainViewModel.showComplete.observeAsState().value!!
     DecoPikminComposeTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -66,10 +67,16 @@ fun MainScreen(mainViewModel: MainViewModel) {
             color = MaterialTheme.colors.background,
         ) {
             Box() {
-                CreatePikminDecorView(decors) { pikminRecord ->
-                    mainViewModel.updatePikminRecord(pikminRecord)
-                }
-
+                CreatePikminDecorView(
+                    decors = decors,
+                    showCompleteDecor = showCompleteDecor,
+                    onClick = { pikminRecord ->
+                        mainViewModel.updatePikminRecord(pikminRecord)
+                    },
+                    onSwitchChanged = {
+                        mainViewModel.updateShowComplete(it)
+                    },
+                )
                 AnimatedVisibility(
                     visible = isLoading,
                     exit = fadeOut(),
@@ -92,7 +99,9 @@ fun MainScreen(mainViewModel: MainViewModel) {
 @VisibleForTesting
 private fun CreatePikminDecorView(
     decors: List<DecorGroup>,
+    showCompleteDecor: Boolean,
     onClick: (pikminRecord: PikminRecord) -> Unit,
+    onSwitchChanged: (showCompleteDecor: Boolean) -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -100,7 +109,12 @@ private fun CreatePikminDecorView(
         itemsIndexed(decors) { index, decor ->
             if (index == 0) {
                 Spacer(modifier = Modifier.height(16.dp))
-                AllPikminInfoView(allDecorGroups = decors, showCompleteDecorType = true) {}
+                AllPikminInfoView(
+                    allDecorGroups = decors,
+                    showCompleteDecorType = showCompleteDecor,
+                ) {
+                    onSwitchChanged(it)
+                }
                 Spacer(modifier = Modifier.height(16.dp))
             }
             DecorGroupView(decor, onClick)
