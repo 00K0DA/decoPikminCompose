@@ -48,6 +48,7 @@
     <string name="decor_type_weather">天気</string>
     <string name="decor_type_theme_park">テーマパーク</string>
     <string name="decor_type_bus_stop">バス停</string>
+    <string name="decor_type_italian_restaurant">イタリアンレストラン</string>
 
     <string name="costume_chef">シェフ</string>
     <string name="costume_shiny_chef">レアシェフ</string>
@@ -82,6 +83,7 @@
     <string name="costume_mountain_ball_keychain">ボールのキーホルダー</string>
     <string name="costume_leaf_hat">葉っぱの帽子</string>
     <string name="costume_theme_park_ticket">テーマパークチケット</string>
+    <string name="costume_pizza">ピザ</string>
 
     <string name="costume_special_mario">マリオの帽子</string>
     <string name="costume_special_new_year">旧正月の飾り 2022</string>
