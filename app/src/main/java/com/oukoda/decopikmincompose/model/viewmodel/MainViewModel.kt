@@ -27,10 +27,16 @@ class MainViewModel(application: Application) : ViewModel() {
     val decorGroups: StateFlow<List<DecorGroup>> = _decorGroups
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
+    private val _showComplete: MutableLiveData<Boolean> = MutableLiveData(true)
+    val showComplete: LiveData<Boolean> = _showComplete
     private var appDatabase: AppDatabase
 
     init {
         appDatabase = AppDatabase.getInstance(application)
+    }
+
+    fun updateShowComplete(boolean: Boolean) {
+        _showComplete.value = boolean
     }
 
     fun createDecors() {

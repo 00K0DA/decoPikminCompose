@@ -1,5 +1,6 @@
 package com.oukoda.decopikmincompose.component
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +28,7 @@ import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.dataclass.PikminIdentifier
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
+import com.oukoda.decopikmincompose.ui.theme.completeColor
 
 @Composable
 fun AllPikminInfoView(
@@ -69,7 +72,11 @@ fun AllPikminInfoView(
             InfoRowWithSwitch(
                 label = stringResource(id = R.string.all_pikmin_info_view_show_complete_decor_title),
                 isSelected = showCompleteDecorType,
-                onChanged = { onChanged(it) },
+
+                onChanged = {
+                    Log.d("TAG", "AllPikminInfoView: $it")
+                    onChanged(it)
+                },
             )
         }
     }
@@ -92,6 +99,7 @@ private fun InfoRowWithSwitch(
             Switch(
                 modifier = Modifier.height(4.dp),
                 checked = isSelected,
+                colors = SwitchDefaults.colors(checkedThumbColor = completeColor),
                 onCheckedChange = {
                     onChanged(!isSelected)
                 },
