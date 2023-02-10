@@ -2,6 +2,7 @@ package com.oukoda.decopikmincompose
 
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.VisibleForTesting
@@ -57,9 +58,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
-    val decors by mainViewModel.decorGroups.collectAsState()
+    val decors by mainViewModel.showDecorGroups.collectAsState()
     val isLoading = mainViewModel.isLoading.observeAsState().value!!
     val showCompleteDecor = mainViewModel.showComplete.observeAsState().value!!
+    Log.d("TAG", "MainScreen: ${decors.size}")
+    decors.forEach {
+        Log.d("TAG", "MainScreen: ${it.decorType}")
+    }
     DecoPikminComposeTheme {
         // A surface container using the 'background' color from the theme
         Surface(

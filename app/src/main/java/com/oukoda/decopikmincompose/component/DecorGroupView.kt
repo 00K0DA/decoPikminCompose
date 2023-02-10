@@ -25,7 +25,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -57,18 +56,13 @@ fun DecorGroupView(
     var isExpand by rememberSaveable {
         mutableStateOf(false)
     }
-
-    var decorGroupInternal by remember {
-        mutableStateOf(decorGroup)
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        DecorTitleView(decorGroupInternal, isExpand) {
+        DecorTitleView(decorGroup, isExpand) {
             isExpand = !isExpand
         }
         AnimatedVisibility(
@@ -84,8 +78,7 @@ fun DecorGroupView(
             ),
             exit = shrinkVertically(),
         ) {
-            CostumeGroupViewHolder(decorGroup = decorGroupInternal) { pikminRecord: PikminRecord, newCostumeGroup: CostumeGroup ->
-                decorGroupInternal = decorGroupInternal.updateCostumeGroup(newCostumeGroup)
+            CostumeGroupViewHolder(decorGroup = decorGroup) { pikminRecord: PikminRecord, _: CostumeGroup ->
                 onClick(pikminRecord)
             }
         }

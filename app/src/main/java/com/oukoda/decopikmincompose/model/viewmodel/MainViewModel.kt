@@ -15,6 +15,7 @@ import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,8 @@ class MainViewModel(application: Application) : ViewModel() {
 
     private val _decorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())
     val decorGroups: StateFlow<List<DecorGroup>> = _decorGroups
+    private val _showDecorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())
+    val showDecorGroups: StateFlow<List<DecorGroup>> = _showDecorGroups
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
     private val _showComplete: MutableLiveData<Boolean> = MutableLiveData(true)
@@ -37,6 +40,15 @@ class MainViewModel(application: Application) : ViewModel() {
 
     fun updateShowComplete(boolean: Boolean) {
         _showComplete.value = boolean
+        updateShowDecorGroups()
+    }
+
+    private fun updateShowDecorGroups() {
+        _showDecorGroups.value = if (_showComplete.value!!) {
+            decorGroups.value
+        } else {
+            decorGroups.value.filter { !it.isCompleted() }
+        }
     }
 
     fun createDecors() {
@@ -88,6 +100,7 @@ class MainViewModel(application: Application) : ViewModel() {
                 }.join()
             }
             Log.d(TAG, "createDecors: ${_decorGroups.value.size}")
+            updateShowDecorGroups()
             viewModelScope.launch(Dispatchers.Main) {
                 _isLoading.value = false
             }
@@ -108,9 +121,11 @@ class MainViewModel(application: Application) : ViewModel() {
                     }
                 }
             }
+            updateShowDecorGroups()
             appDatabase.pikminRecordDao().update(pikminRecord)
         }
     }
+
     class MainViewModelFactory(private val application: Application) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
