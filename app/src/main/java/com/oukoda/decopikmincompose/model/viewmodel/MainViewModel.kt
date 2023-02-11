@@ -15,13 +15,13 @@ import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : ViewModel() {
     companion object {
         private val TAG: String = MainViewModel::class.simpleName!!
+        const val KEY: String = "NormalScreenViewModel"
     }
 
     private val _decorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())

@@ -78,7 +78,7 @@ class DecorGroupViewTest {
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
                 ) {
-                    DecorGroupView(decorGroup = rememberDecorGroup, onExpand = {}, onClick = {
+                    DecorGroupView(decorGroup = rememberDecorGroup) {
                         for (costumeGroup in decorGroup) {
                             if (costumeGroup.costumeType == it.costumeType) {
                                 val updateCostumeGroup =
@@ -89,7 +89,7 @@ class DecorGroupViewTest {
                                 break
                             }
                         }
-                    })
+                    }
                 }
             }
         }
