@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +39,9 @@ import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import com.oukoda.decopikmincompose.model.viewmodel.MainViewModel
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,11 +63,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
-    val decors by mainViewModel.showDecorGroups.collectAsState()
+    val allDecors by mainViewModel.decorGroups.collectAsState()
+    val showDecors by mainViewModel.showDecorGroups.collectAsState()
     val isLoading = mainViewModel.isLoading.observeAsState().value!!
     val showCompleteDecor = mainViewModel.showComplete.observeAsState().value!!
-    Log.d("TAG", "MainScreen: ${decors.size}")
-    decors.forEach {
+    Log.d("TAG", "MainScreen: ${showDecors.size}")
+    showDecors.forEach {
         Log.d("TAG", "MainScreen: ${it.decorType}")
     }
     DecoPikminComposeTheme {
@@ -73,7 +79,8 @@ fun MainScreen(mainViewModel: MainViewModel) {
         ) {
             Box() {
                 CreatePikminDecorView(
-                    decors = decors,
+                    allDecors = allDecors,
+                    showDecors = showDecors,
                     showCompleteDecor = showCompleteDecor,
                     onClick = { pikminRecord ->
                         mainViewModel.updatePikminRecord(pikminRecord)
@@ -103,27 +110,37 @@ fun MainScreen(mainViewModel: MainViewModel) {
 @Composable
 @VisibleForTesting
 private fun CreatePikminDecorView(
-    decors: List<DecorGroup>,
+    allDecors: List<DecorGroup>,
+    showDecors: List<DecorGroup>,
     showCompleteDecor: Boolean,
     onClick: (pikminRecord: PikminRecord) -> Unit,
     onSwitchChanged: (showCompleteDecor: Boolean) -> Unit,
 ) {
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        state = listState,
     ) {
-        itemsIndexed(decors) { index, decor ->
+        itemsIndexed(showDecors) { index, decor ->
             if (index == 0) {
                 Spacer(modifier = Modifier.height(16.dp))
                 AllPikminInfoView(
-                    allDecorGroups = decors,
+                    allDecorGroups = allDecors,
                     showCompleteDecorType = showCompleteDecor,
                 ) {
                     onSwitchChanged(it)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
-            DecorGroupView(decor, onClick)
-            if (index == decors.size - 1) {
+            DecorGroupView(decor, onClick) {
+                coroutineScope.launch(Dispatchers.Main) {
+                    if (index == showDecors.size - 1) {
+                        listState.animateScrollToItem(index, 0)
+                    }
+                }
+            }
+            if (index == showDecors.size - 1) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

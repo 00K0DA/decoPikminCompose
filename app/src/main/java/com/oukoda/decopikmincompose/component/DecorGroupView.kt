@@ -52,6 +52,7 @@ import com.oukoda.decopikmincompose.ui.theme.progressColor
 fun DecorGroupView(
     decorGroup: DecorGroup,
     onClick: (pikminRecord: PikminRecord) -> Unit,
+    onExpand: () -> Unit,
 ) {
     var isExpand by rememberSaveable {
         mutableStateOf(false)
@@ -80,6 +81,9 @@ fun DecorGroupView(
         ) {
             CostumeGroupViewHolder(decorGroup = decorGroup) { pikminRecord: PikminRecord, _: CostumeGroup ->
                 onClick(pikminRecord)
+            }
+            if (isExpand) {
+                onExpand()
             }
         }
     }
@@ -176,6 +180,6 @@ private fun PikminDecorViewPreview() {
     val decorGroup =
         DecorGroup(decorType = decorType, costumeGroups = pikminIdentifierLists)
     DecoPikminComposeTheme {
-        DecorGroupView(decorGroup) {}
+        DecorGroupView(decorGroup, {}, {})
     }
 }
