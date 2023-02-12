@@ -60,6 +60,7 @@ enum class CostumeType {
     PresentSticker2023,
 
     ThemeParkTicket,
+    Pizza,
     ;
 
     companion object {
@@ -139,6 +140,7 @@ enum class CostumeType {
             Glasses2023 -> R.string.costume_special_2023_glasses
             NewYear2023 -> R.string.costume_special_new_year_2023
             PresentSticker2023 -> R.string.costume_special_present_sticker_2023
+            Pizza -> R.string.costume_pizza
         }
     }
 }

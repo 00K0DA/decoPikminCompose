@@ -32,6 +32,7 @@ enum class DecorType {
     Weather,
     ThemePark,
     BusStop,
+    ItalianRestaurant,
     ;
 
     fun costumeTypes(): List<CostumeType> = when (this) {
@@ -78,6 +79,7 @@ enum class DecorType {
         ThemePark -> listOf(CostumeType.ThemeParkTicket)
         BusStop -> listOf(CostumeType.BusPaperCraft)
         Stadium -> listOf(CostumeType.BallKeyChain)
+        ItalianRestaurant -> listOf(CostumeType.Pizza)
     }
 
     fun stringId(): Int = when (this) {
@@ -110,5 +112,6 @@ enum class DecorType {
         Weather -> R.string.decor_type_weather
         ThemePark -> R.string.decor_type_theme_park
         BusStop -> R.string.decor_type_bus_stop
+        ItalianRestaurant -> R.string.decor_type_italian_restaurant
     }
 }
