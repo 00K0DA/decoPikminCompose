@@ -1,9 +1,6 @@
 package com.oukoda.decopikmincompose.model.viewmodel
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,24 +11,57 @@ import com.oukoda.decopikmincompose.model.room.AppDatabase
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : ViewModel() {
     companion object {
         private val TAG: String = MainViewModel::class.simpleName!!
-        const val KEY: String = "NormalScreenViewModel"
+        const val KEY: String = "MainViewModel"
     }
 
-    private val _decorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())
-    val decorGroups: StateFlow<List<DecorGroup>> = _decorGroups
-    private val _showDecorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())
-    val showDecorGroups: StateFlow<List<DecorGroup>> = _showDecorGroups
-    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
-    val isLoading: LiveData<Boolean> = _isLoading
-    private val _showComplete: MutableLiveData<Boolean> = MutableLiveData(true)
-    val showComplete: LiveData<Boolean> = _showComplete
+    private val _showComplete: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val showComplete: StateFlow<Boolean> = _showComplete
+
+    private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _allDecorGroups: MutableStateFlow<List<DecorGroup>> = MutableStateFlow(listOf())
+    private val allDecorGroups: StateFlow<List<DecorGroup>> = _allDecorGroups
+
+    val normalDecorGroups: StateFlow<List<DecorGroup>> = allDecorGroups.map { groups ->
+        groups.filter { it.decorType != DecorType.Special }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        listOf(),
+    )
+
+    val showNormalDecorGroups: StateFlow<List<DecorGroup>> =
+        normalDecorGroups.combine(showComplete) { decorGroups, show ->
+            if (show) decorGroups else decorGroups.filter { !it.isCompleted() }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(),
+            listOf(),
+        )
+
+    val specialDecorGroup: StateFlow<DecorGroup> = allDecorGroups.transform { groups ->
+        if (groups.any { it.decorType == DecorType.Special }) {
+            emit(groups.first { it.decorType == DecorType.Special })
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        DecorGroup(decorType = DecorType.Special, listOf()),
+    )
+
     private var appDatabase: AppDatabase
 
     init {
@@ -40,19 +70,10 @@ class MainViewModel(application: Application) : ViewModel() {
 
     fun updateShowComplete(boolean: Boolean) {
         _showComplete.value = boolean
-        updateShowDecorGroups()
-    }
-
-    private fun updateShowDecorGroups() {
-        _showDecorGroups.value = if (_showComplete.value!!) {
-            decorGroups.value
-        } else {
-            decorGroups.value.filter { !it.isCompleted() }
-        }
     }
 
     fun createDecors() {
-        if (decorGroups.value.isNotEmpty()) {
+        if (normalDecorGroups.value.isNotEmpty()) {
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -92,15 +113,13 @@ class MainViewModel(application: Application) : ViewModel() {
                     costumeGroups = mutableCostumeGroups.toList(),
                 )
 
-                val mutableDecorGroups = _decorGroups.value.toMutableList()
+                val mutableDecorGroups = _allDecorGroups.value.toMutableList()
                 mutableDecorGroups.add(decorGroup)
 
                 viewModelScope.launch(Dispatchers.Main) {
-                    _decorGroups.value = mutableDecorGroups.toList()
+                    _allDecorGroups.value = mutableDecorGroups.toList()
                 }.join()
             }
-            Log.d(TAG, "createDecors: ${_decorGroups.value.size}")
-            updateShowDecorGroups()
             viewModelScope.launch(Dispatchers.Main) {
                 _isLoading.value = false
             }
@@ -109,7 +128,7 @@ class MainViewModel(application: Application) : ViewModel() {
 
     fun updatePikminRecord(pikminRecord: PikminRecord) {
         viewModelScope.launch(Dispatchers.IO) {
-            _decorGroups.update { groups ->
+            _allDecorGroups.update { groups ->
                 groups.map {
                     if (it.decorType == pikminRecord.decorType) {
                         var costumeGroup =
@@ -121,7 +140,6 @@ class MainViewModel(application: Application) : ViewModel() {
                     }
                 }
             }
-            updateShowDecorGroups()
             appDatabase.pikminRecordDao().update(pikminRecord)
         }
     }

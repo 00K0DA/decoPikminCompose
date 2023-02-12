@@ -18,7 +18,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,9 +29,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.oukoda.decopikmincompose.component.BottomBar
-import com.oukoda.decopikmincompose.component.NormalScreen
 import com.oukoda.decopikmincompose.model.enumclass.BottomItems
 import com.oukoda.decopikmincompose.model.viewmodel.MainViewModel
+import com.oukoda.decopikmincompose.screen.NormalScreen
+import com.oukoda.decopikmincompose.screen.SpecialScreen
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -60,10 +60,11 @@ fun MainScreen() {
     )
     mainViewModel.createDecors()
 
-    val allDecors by mainViewModel.decorGroups.collectAsState()
-    val showDecors by mainViewModel.showDecorGroups.collectAsState()
-    val isLoading = mainViewModel.isLoading.observeAsState().value!!
-    val showCompleteDecor = mainViewModel.showComplete.observeAsState().value!!
+    val allDecors by mainViewModel.normalDecorGroups.collectAsState()
+    val showDecors by mainViewModel.showNormalDecorGroups.collectAsState()
+    val isLoading by mainViewModel.isLoading.collectAsState()
+    val showCompleteDecor by mainViewModel.showComplete.collectAsState()
+    val specialDecorGroup by mainViewModel.specialDecorGroup.collectAsState()
 
     DecoPikminComposeTheme {
         Scaffold(
@@ -89,7 +90,13 @@ fun MainScreen() {
                                     { mainViewModel.updateShowComplete(it) },
                                 )
                             }
-                            composable(BottomItems.Special.route()) { Text(text = "Special") }
+                            composable(BottomItems.Special.route()) {
+                                SpecialScreen(
+                                    specialDecorGroup = specialDecorGroup,
+                                ) {
+                                    mainViewModel.updatePikminRecord(it)
+                                }
+                            }
                         }
                     }
                     AnimatedVisibility(
