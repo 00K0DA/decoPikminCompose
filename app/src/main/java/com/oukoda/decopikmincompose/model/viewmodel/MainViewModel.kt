@@ -29,6 +29,9 @@ class MainViewModel(application: Application) : ViewModel() {
     private val _showComplete: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val showComplete: StateFlow<Boolean> = _showComplete
 
+    private val _showCompleteSpecial: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val showCompleteSpecial: StateFlow<Boolean> = _showCompleteSpecial
+
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -62,6 +65,22 @@ class MainViewModel(application: Application) : ViewModel() {
         DecorGroup(decorType = DecorType.Special, listOf()),
     )
 
+    val showSpecialDecorGroups: StateFlow<DecorGroup> =
+        specialDecorGroup.combine(showCompleteSpecial) { decorGroup, show ->
+            if (show) {
+                decorGroup
+            } else {
+                DecorGroup(
+                    decorType = decorGroup.decorType,
+                    decorGroup.filter { !it.isCompleted() },
+                )
+            }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(),
+            DecorGroup(decorType = DecorType.Special, listOf()),
+        )
+
     private var appDatabase: AppDatabase
 
     init {
@@ -70,6 +89,10 @@ class MainViewModel(application: Application) : ViewModel() {
 
     fun updateShowComplete(boolean: Boolean) {
         _showComplete.value = boolean
+    }
+
+    fun updateShowCompleteSpecial(boolean: Boolean) {
+        _showCompleteSpecial.value = boolean
     }
 
     fun createDecors() {

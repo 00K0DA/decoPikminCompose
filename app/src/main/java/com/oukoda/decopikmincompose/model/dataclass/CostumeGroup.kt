@@ -25,6 +25,15 @@ class CostumeGroup(
     fun getHaveCount(): Int =
         pikminIdentifiers.count { it.pikminStatusType != PikminStatusType.NotHave }
 
+    fun isCompleted(): Boolean {
+        pikminIdentifiers.forEach { pikminIdentifier ->
+            if (pikminIdentifier.pikminStatusType == PikminStatusType.NotHave) {
+                return false
+            }
+        }
+        return true
+    }
+
     fun updatePikminData(pikminIdentifier: PikminIdentifier): CostumeGroup {
         return CostumeGroup(
             costumeType,

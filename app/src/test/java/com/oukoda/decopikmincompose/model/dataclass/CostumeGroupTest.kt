@@ -6,6 +6,7 @@ import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 import com.oukoda.decopikmincompose.model.enumclass.PikminType
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -237,5 +238,34 @@ class CostumeGroupTest {
         )
         assertEquals(costumeGroup.size, insertList.size)
         assertEquals(0, deleteList.size)
+    }
+
+    @Test
+    fun isCompletedTrue() {
+        val costumeGroup7 = CostumeGroup(
+            CostumeType.Acorn,
+            CostumeType.Acorn.pikminTypes().map {
+                PikminIdentifier(it, 0, PikminStatusType.AlreadyExists)
+            },
+        )
+        assertTrue(costumeGroup7.isCompleted())
+    }
+
+    @Test
+    fun isCompletedFalse() {
+        val costumeGroup7 = CostumeGroup(
+            CostumeType.Acorn,
+            CostumeType.Acorn.pikminTypes().map {
+                PikminIdentifier(it, 0, PikminStatusType.AlreadyExists)
+            },
+        )
+        costumeGroup7.updatePikminData(
+            PikminIdentifier(
+                PikminType.Red,
+                0,
+                PikminStatusType.NotHave,
+            ),
+        )
+        assertFalse(costumeGroup7.isCompleted())
     }
 }

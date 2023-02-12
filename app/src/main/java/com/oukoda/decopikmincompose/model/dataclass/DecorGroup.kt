@@ -1,7 +1,6 @@
 package com.oukoda.decopikmincompose.model.dataclass
 
 import com.oukoda.decopikmincompose.model.enumclass.DecorType
-import com.oukoda.decopikmincompose.model.enumclass.PikminStatusType
 
 class DecorGroup(
     val decorType: DecorType,
@@ -23,11 +22,9 @@ class DecorGroup(
     }
 
     fun isCompleted(): Boolean {
-        costumeGroups.forEach { pikminDataList ->
-            pikminDataList.forEach {
-                if (it.pikminStatusType == PikminStatusType.NotHave) {
-                    return false
-                }
+        costumeGroups.forEach { costumeGroup ->
+            if (!costumeGroup.isCompleted()) {
+                return false
             }
         }
         return true

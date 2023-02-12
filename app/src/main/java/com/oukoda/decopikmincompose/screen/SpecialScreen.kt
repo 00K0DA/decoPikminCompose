@@ -9,14 +9,18 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.oukoda.decopikmincompose.component.AllPikminInfoView
 import com.oukoda.decopikmincompose.component.SpecialCostumeGroupView
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 
 @Composable
 fun SpecialScreen(
+    allSpecialDecorGroup: DecorGroup,
     specialDecorGroup: DecorGroup,
+    showCompleteCostume: Boolean,
     onClick: (pikminRecord: PikminRecord) -> Unit,
+    onSwitchChanged: (showCompleteCostume: Boolean) -> Unit,
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
@@ -25,7 +29,14 @@ fun SpecialScreen(
     ) {
         itemsIndexed(specialDecorGroup) { index, costumeGroup ->
             if (index == 0) {
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                AllPikminInfoView(
+                    allDecorGroups = listOf(allSpecialDecorGroup),
+                    showCompleteDecorType = showCompleteCostume,
+                ) {
+                    onSwitchChanged(it)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
             }
             SpecialCostumeGroupView(
                 costumeGroup,

@@ -60,11 +60,15 @@ fun MainScreen() {
     )
     mainViewModel.createDecors()
 
+    val isLoading by mainViewModel.isLoading.collectAsState()
+
     val allDecors by mainViewModel.normalDecorGroups.collectAsState()
     val showDecors by mainViewModel.showNormalDecorGroups.collectAsState()
-    val isLoading by mainViewModel.isLoading.collectAsState()
     val showCompleteDecor by mainViewModel.showComplete.collectAsState()
+
     val specialDecorGroup by mainViewModel.specialDecorGroup.collectAsState()
+    val showSpecialDecorGroup by mainViewModel.showSpecialDecorGroups.collectAsState()
+    val showSpecialCompleteCostume by mainViewModel.showCompleteSpecial.collectAsState()
 
     DecoPikminComposeTheme {
         Scaffold(
@@ -92,10 +96,12 @@ fun MainScreen() {
                             }
                             composable(BottomItems.Special.route()) {
                                 SpecialScreen(
-                                    specialDecorGroup = specialDecorGroup,
-                                ) {
-                                    mainViewModel.updatePikminRecord(it)
-                                }
+                                    allSpecialDecorGroup = specialDecorGroup,
+                                    specialDecorGroup = showSpecialDecorGroup,
+                                    showCompleteCostume = showSpecialCompleteCostume,
+                                    onClick = { mainViewModel.updatePikminRecord(it) },
+                                    onSwitchChanged = { mainViewModel.updateShowCompleteSpecial(it) },
+                                )
                             }
                         }
                     }
