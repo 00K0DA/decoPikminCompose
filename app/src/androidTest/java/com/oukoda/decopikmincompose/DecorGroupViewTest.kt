@@ -1,14 +1,20 @@
 package com.oukoda.decopikmincompose
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import com.oukoda.decopikmincompose.component.DecorGroupView
 import com.oukoda.decopikmincompose.model.dataclass.CostumeGroup
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
@@ -67,14 +73,21 @@ class DecorGroupViewTest {
                 var rememberDecorGroup by remember {
                     mutableStateOf(decorGroup)
                 }
-                DecorGroupView(decorGroup = rememberDecorGroup) {
-                    for (costumeGroup in decorGroup) {
-                        if (costumeGroup.costumeType == it.costumeType) {
-                            val updateCostumeGroup = costumeGroup.updateByPikminRecords(listOf(it))
-                            decorGroup = decorGroup.updateCostumeGroup(updateCostumeGroup)
-                            rememberDecorGroup =
-                                rememberDecorGroup.updateCostumeGroup(updateCostumeGroup)
-                            break
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    DecorGroupView(decorGroup = rememberDecorGroup) {
+                        for (costumeGroup in decorGroup) {
+                            if (costumeGroup.costumeType == it.costumeType) {
+                                val updateCostumeGroup =
+                                    costumeGroup.updateByPikminRecords(listOf(it))
+                                decorGroup = decorGroup.updateCostumeGroup(updateCostumeGroup)
+                                rememberDecorGroup =
+                                    rememberDecorGroup.updateCostumeGroup(updateCostumeGroup)
+                                break
+                            }
                         }
                     }
                 }
@@ -85,6 +98,7 @@ class DecorGroupViewTest {
         val decorTextNode =
             composeTestRule.onNodeWithText(activity.getString(decorGroup.decorType.stringId()))
         decorTextNode.assertExists()
+        decorTextNode.performScrollTo()
         decorTextNode.performClick()
 
         val pikminIdentifierViews = PikminType.values().map { pikminType ->
@@ -97,6 +111,7 @@ class DecorGroupViewTest {
 
         (0..2).forEach { _ ->
             pikminIdentifierViews.forEach { node ->
+                decorTextNode.performScrollTo()
                 node.performClick()
             }
         }

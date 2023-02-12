@@ -69,6 +69,7 @@ enum class DecorType {
                 CostumeType.KoppaiteSpaceSuit,
                 CostumeType.Mitten,
                 CostumeType.Glasses2023,
+                CostumeType.PresentSticker2023,
             )
         LoadSide -> listOf(CostumeType.Sticker)
         SushiRestaurant -> listOf(CostumeType.Sushi)

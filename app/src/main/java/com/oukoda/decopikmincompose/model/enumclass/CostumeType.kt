@@ -57,6 +57,7 @@ enum class CostumeType {
     Mitten,
     Glasses2023,
     NewYear2023,
+    PresentSticker2023,
 
     ThemeParkTicket,
     ;
@@ -137,6 +138,7 @@ enum class CostumeType {
             Mitten -> R.string.costume_special_mitten
             Glasses2023 -> R.string.costume_special_2023_glasses
             NewYear2023 -> R.string.costume_special_new_year_2023
+            PresentSticker2023 -> R.string.costume_special_present_sticker_2023
         }
     }
 }
