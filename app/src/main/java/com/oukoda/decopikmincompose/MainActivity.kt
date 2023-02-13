@@ -2,23 +2,19 @@ package com.oukoda.decopikmincompose
 
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,13 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.oukoda.decopikmincompose.component.AllPikminInfoView
-import com.oukoda.decopikmincompose.component.DecorGroupView
-import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
-import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.oukoda.decopikmincompose.component.BottomBar
+import com.oukoda.decopikmincompose.component.NormalScreen
+import com.oukoda.decopikmincompose.model.enumclass.BottomItems
 import com.oukoda.decopikmincompose.model.viewmodel.MainViewModel
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
 
@@ -42,91 +39,85 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val owner = LocalViewModelStoreOwner.current!!
-            val mainViewModel: MainViewModel = viewModel(
-                owner,
-                "MainViewModel",
-                MainViewModel.MainViewModelFactory(
-                    LocalContext.current.applicationContext as Application,
-                ),
-            )
-            mainViewModel.createDecors()
-            MainScreen(mainViewModel)
+            MainScreen()
         }
     }
 }
 
 @Composable
-fun MainScreen(mainViewModel: MainViewModel) {
-    val decors by mainViewModel.showDecorGroups.collectAsState()
+fun MainScreen() {
+    val scaffoldState = rememberScaffoldState()
+    val navController = rememberNavController()
+    val startDestination = BottomItems.Normal.route()
+
+    val owner = LocalViewModelStoreOwner.current!!
+    val mainViewModel: MainViewModel = viewModel(
+        owner,
+        MainViewModel.KEY,
+        MainViewModel.MainViewModelFactory(
+            LocalContext.current.applicationContext as Application,
+        ),
+    )
+    mainViewModel.createDecors()
+
+    val allDecors by mainViewModel.decorGroups.collectAsState()
+    val showDecors by mainViewModel.showDecorGroups.collectAsState()
     val isLoading = mainViewModel.isLoading.observeAsState().value!!
     val showCompleteDecor = mainViewModel.showComplete.observeAsState().value!!
-    Log.d("TAG", "MainScreen: ${decors.size}")
-    decors.forEach {
-        Log.d("TAG", "MainScreen: ${it.decorType}")
-    }
+
     DecoPikminComposeTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background,
-        ) {
-            Box() {
-                CreatePikminDecorView(
-                    decors = decors,
-                    showCompleteDecor = showCompleteDecor,
-                    onClick = { pikminRecord ->
-                        mainViewModel.updatePikminRecord(pikminRecord)
-                    },
-                    onSwitchChanged = {
-                        mainViewModel.updateShowComplete(it)
-                    },
-                )
-                AnimatedVisibility(
-                    visible = isLoading,
-                    exit = fadeOut(),
-                ) {
-                    Box(
-                        Modifier
+        Scaffold(
+            scaffoldState = scaffoldState,
+            content = {
+                Box {
+                    Surface(
+                        modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.DarkGray.copy(alpha = 0.9F)),
-                        contentAlignment = Alignment.Center,
+                            .padding(it),
+                        color = MaterialTheme.colors.background,
                     ) {
-                        Text(text = "Loading", color = Color.White)
+                        NavHost(
+                            navController = navController,
+                            startDestination = BottomItems.Normal.route(),
+                        ) {
+                            composable(BottomItems.Normal.route()) {
+                                NormalScreen(
+                                    allDecors,
+                                    showDecors,
+                                    showCompleteDecor,
+                                    { mainViewModel.updatePikminRecord(it) },
+                                    { mainViewModel.updateShowComplete(it) },
+                                )
+                            }
+                            composable(BottomItems.Special.route()) { Text(text = "Special") }
+                        }
+                    }
+                    AnimatedVisibility(
+                        visible = isLoading,
+                        exit = fadeOut(),
+                    ) {
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                                .background(Color.DarkGray.copy(alpha = 0.9F)),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(text = "Loading", color = Color.White)
+                        }
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-@VisibleForTesting
-private fun CreatePikminDecorView(
-    decors: List<DecorGroup>,
-    showCompleteDecor: Boolean,
-    onClick: (pikminRecord: PikminRecord) -> Unit,
-    onSwitchChanged: (showCompleteDecor: Boolean) -> Unit,
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        itemsIndexed(decors) { index, decor ->
-            if (index == 0) {
-                Spacer(modifier = Modifier.height(16.dp))
-                AllPikminInfoView(
-                    allDecorGroups = decors,
-                    showCompleteDecorType = showCompleteDecor,
-                ) {
-                    onSwitchChanged(it)
+            },
+            bottomBar = {
+                val route = if (navController.currentDestination != null) {
+                    navController.currentDestination!!.route!!
+                } else {
+                    startDestination
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-            DecorGroupView(decor, onClick)
-            if (index == decors.size - 1) {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
+                BottomBar(route) {
+                    navController.navigate(it.route()) { launchSingleTop = true }
+                }
+            },
+        )
     }
 }
 

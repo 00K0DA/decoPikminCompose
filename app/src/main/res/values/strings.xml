@@ -19,6 +19,11 @@
     <string name="pikmin_status_already">保持</string>
     <string name="pikmin_status_not_have">未保持</string>
 
+    <string name="bottom_item_normal">通常</string>
+    <string name="bottom_item_special">スペシャル</string>
+    <string name="bottom_item_normal_route">normal</string>
+    <string name="bottom_item_special_route">special</string>
+
     <string name="decor_type_restaurant">レストラン</string>
     <string name="decor_type_cafe">カフェ</string>
     <string name="decor_type_sweetshop">デザート</string>
