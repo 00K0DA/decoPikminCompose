@@ -1,24 +1,20 @@
 package com.oukoda.decopikmincompose.component
 
 import android.util.Log
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,15 +35,9 @@ fun AllPikminInfoView(
     val allPikminCount = allDecorGroups.sumOf { it.getCount() }
     val alreadyHaveCount = allDecorGroups.sumOf { it.getHaveCount() }
     val haveCountPercentage: Float = alreadyHaveCount.toFloat() * 100 / allPikminCount
-    Box(
-        Modifier
-            .clip(RoundedCornerShape(24.dp))
-            .padding(horizontal = 16.dp)
-            .border(
-                width = 2.dp,
-                color = Color.Gray,
-                shape = RoundedCornerShape(24.dp),
-            ),
+    Card(
+        Modifier.padding(horizontal = 16.dp),
+        elevation = 2.dp,
     ) {
         Column(
             Modifier

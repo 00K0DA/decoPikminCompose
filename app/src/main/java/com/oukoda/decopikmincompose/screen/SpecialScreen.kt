@@ -10,36 +10,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.oukoda.decopikmincompose.component.AllPikminInfoView
-import com.oukoda.decopikmincompose.component.DecorGroupView
+import com.oukoda.decopikmincompose.component.SpecialCostumeGroupView
 import com.oukoda.decopikmincompose.model.dataclass.DecorGroup
 import com.oukoda.decopikmincompose.model.room.entity.PikminRecord
 
 @Composable
-fun NormalScreen(
-    allDecors: List<DecorGroup>,
-    showDecors: List<DecorGroup>,
-    showCompleteDecor: Boolean,
+fun SpecialScreen(
+    allSpecialDecorGroup: DecorGroup,
+    specialDecorGroup: DecorGroup,
+    showCompleteCostume: Boolean,
     onClick: (pikminRecord: PikminRecord) -> Unit,
-    onSwitchChanged: (showCompleteDecor: Boolean) -> Unit,
+    onSwitchChanged: (showCompleteCostume: Boolean) -> Unit,
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = listState,
     ) {
-        itemsIndexed(showDecors) { index, decor ->
+        itemsIndexed(specialDecorGroup) { index, costumeGroup ->
             if (index == 0) {
                 Spacer(modifier = Modifier.height(16.dp))
                 AllPikminInfoView(
-                    allDecorGroups = allDecors,
-                    showCompleteDecorType = showCompleteDecor,
+                    allDecorGroups = listOf(allSpecialDecorGroup),
+                    showCompleteDecorType = showCompleteCostume,
                 ) {
                     onSwitchChanged(it)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
-            DecorGroupView(decor, onClick)
-            if (index == showDecors.size - 1) {
+            SpecialCostumeGroupView(
+                costumeGroup,
+            ) {
+                onClick(it)
+            }
+            if (index == specialDecorGroup.size - 1) {
                 Spacer(modifier = Modifier.height(96.dp))
             }
         }
