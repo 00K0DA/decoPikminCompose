@@ -24,3 +24,11 @@ val wingPikminColor = Color(0xC4, 0x6D, 0xAF)
 val growingStatusColor = Color(0xFF, 0x7E, 0x00)
 val alreadyStatusColor = Color(0x4D, 0xB5, 0x6A)
 val notHaveStatusColor = Color(0x79, 0x79, 0x79)
+
+// bottomBar selectColor
+val selectedColor = completeColor
+val unselectedColor = Color.LightGray
+
+// statusBarColor
+val statusBarLightColor = Color.White
+val statusBarDarkColor = Color(0x12, 0x12, 0x12)

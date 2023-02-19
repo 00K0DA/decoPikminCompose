@@ -253,13 +253,13 @@ class CostumeGroupTest {
 
     @Test
     fun isCompletedFalse() {
-        val costumeGroup7 = CostumeGroup(
+        var costumeGroup7 = CostumeGroup(
             CostumeType.Acorn,
             CostumeType.Acorn.pikminTypes().map {
                 PikminIdentifier(it, 0, PikminStatusType.AlreadyExists)
             },
         )
-        costumeGroup7.updatePikminData(
+        costumeGroup7 = costumeGroup7.updatePikminData(
             PikminIdentifier(
                 PikminType.Red,
                 0,
