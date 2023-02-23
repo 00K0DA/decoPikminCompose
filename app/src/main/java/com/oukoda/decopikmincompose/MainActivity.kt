@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,25 +30,37 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.oukoda.decopikmincompose.component.BottomBar
 import com.oukoda.decopikmincompose.model.enumclass.BottomItems
 import com.oukoda.decopikmincompose.model.viewmodel.MainViewModel
 import com.oukoda.decopikmincompose.screen.NormalScreen
 import com.oukoda.decopikmincompose.screen.SpecialScreen
 import com.oukoda.decopikmincompose.ui.theme.DecoPikminComposeTheme
+import com.oukoda.decopikmincompose.ui.theme.statusBarDarkColor
+import com.oukoda.decopikmincompose.ui.theme.statusBarLightColor
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            DecoPikminComposeTheme {
+                val systemUiController = rememberSystemUiController()
+                val statusBarColor =
+                    if (isSystemInDarkTheme()) statusBarDarkColor else statusBarLightColor
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = statusBarColor,
+                    )
+                }
+                MainScreen()
+            }
         }
     }
 }
 
 @Composable
 fun MainScreen() {
-    val scaffoldState = rememberScaffoldState()
     val navController = rememberNavController()
     val startDestination = BottomItems.Normal.route()
 
@@ -58,6 +72,7 @@ fun MainScreen() {
             LocalContext.current.applicationContext as Application,
         ),
     )
+
     mainViewModel.createDecors()
 
     val isLoading by mainViewModel.isLoading.collectAsState()
@@ -70,73 +85,70 @@ fun MainScreen() {
     val showSpecialDecorGroup by mainViewModel.showSpecialDecorGroups.collectAsState()
     val showSpecialCompleteCostume by mainViewModel.showCompleteSpecial.collectAsState()
 
-    DecoPikminComposeTheme {
-        Scaffold(
-            scaffoldState = scaffoldState,
-            content = {
-                Box {
-                    Surface(
-                        modifier = Modifier
+    Scaffold(
+        scaffoldState = rememberScaffoldState(),
+        content = {
+            Box {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it),
+                    color = MaterialTheme.colors.background,
+                ) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = BottomItems.Normal.route(),
+                    ) {
+                        composable(BottomItems.Normal.route()) {
+                            NormalScreen(
+                                allDecors,
+                                showDecors,
+                                showCompleteDecor,
+                                { mainViewModel.updatePikminRecord(it) },
+                                { mainViewModel.updateShowComplete(it) },
+                            )
+                        }
+                        composable(BottomItems.Special.route()) {
+                            SpecialScreen(
+                                allSpecialDecorGroup = specialDecorGroup,
+                                specialDecorGroup = showSpecialDecorGroup,
+                                showCompleteCostume = showSpecialCompleteCostume,
+                                onClick = { mainViewModel.updatePikminRecord(it) },
+                                onSwitchChanged = { mainViewModel.updateShowCompleteSpecial(it) },
+                            )
+                        }
+                    }
+                }
+                AnimatedVisibility(
+                    visible = isLoading,
+                    exit = fadeOut(),
+                ) {
+                    Box(
+                        Modifier
                             .fillMaxSize()
-                            .padding(it),
-                        color = MaterialTheme.colors.background,
+                            .background(Color.DarkGray.copy(alpha = 0.9F)),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        NavHost(
-                            navController = navController,
-                            startDestination = BottomItems.Normal.route(),
-                        ) {
-                            composable(BottomItems.Normal.route()) {
-                                NormalScreen(
-                                    allDecors,
-                                    showDecors,
-                                    showCompleteDecor,
-                                    { mainViewModel.updatePikminRecord(it) },
-                                    { mainViewModel.updateShowComplete(it) },
-                                )
-                            }
-                            composable(BottomItems.Special.route()) {
-                                SpecialScreen(
-                                    allSpecialDecorGroup = specialDecorGroup,
-                                    specialDecorGroup = showSpecialDecorGroup,
-                                    showCompleteCostume = showSpecialCompleteCostume,
-                                    onClick = { mainViewModel.updatePikminRecord(it) },
-                                    onSwitchChanged = { mainViewModel.updateShowCompleteSpecial(it) },
-                                )
-                            }
-                        }
-                    }
-                    AnimatedVisibility(
-                        visible = isLoading,
-                        exit = fadeOut(),
-                    ) {
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                                .background(Color.DarkGray.copy(alpha = 0.9F)),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(text = "Loading", color = Color.White)
-                        }
+                        Text(text = "Loading", color = Color.White)
                     }
                 }
-            },
-            bottomBar = {
-                val route = if (navController.currentDestination != null) {
-                    navController.currentDestination!!.route!!
-                } else {
-                    startDestination
-                }
-                BottomBar(route) {
-                    navController.navigate(it.route()) { launchSingleTop = true }
-                }
-            },
-        )
-    }
+            }
+        },
+        bottomBar = {
+            val route = if (navController.currentDestination != null) {
+                navController.currentDestination!!.route!!
+            } else {
+                startDestination
+            }
+            BottomBar(route) {
+                navController.navigate(it.route()) { launchSingleTop = true }
+            }
+        },
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    DecoPikminComposeTheme {
-    }
+    DecoPikminComposeTheme {}
 }

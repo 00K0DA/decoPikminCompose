@@ -67,7 +67,7 @@ fun ExpandTitleView(
                     .padding(end = 8.dp),
                 painter = painterResource(id = imageId),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary),
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
             )
         }
     }
