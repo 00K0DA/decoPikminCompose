@@ -20,6 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -85,6 +88,16 @@ fun MainScreen() {
     val showSpecialDecorGroup by mainViewModel.showSpecialDecorGroups.collectAsState()
     val showSpecialCompleteCostume by mainViewModel.showCompleteSpecial.collectAsState()
 
+    var route by remember {
+        mutableStateOf(navController.currentDestination?.route ?: startDestination)
+    }
+
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        destination.route?.let {
+            route = it
+        }
+    }
+
     Scaffold(
         scaffoldState = rememberScaffoldState(),
         content = {
@@ -135,13 +148,10 @@ fun MainScreen() {
             }
         },
         bottomBar = {
-            val route = if (navController.currentDestination != null) {
-                navController.currentDestination!!.route!!
-            } else {
-                startDestination
-            }
             BottomBar(route) {
-                navController.navigate(it.route()) { launchSingleTop = true }
+                navController.navigate(it.route()) {
+                    launchSingleTop = true
+                }
             }
         },
     )
