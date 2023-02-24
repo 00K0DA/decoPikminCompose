@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.oukoda.decopikmincompose.component.AllPikminInfoView
 import com.oukoda.decopikmincompose.component.SpecialCostumeGroupView
@@ -24,6 +25,7 @@ fun SpecialScreen(
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
+        modifier = Modifier.testTag("special_screen_lazy_column"),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = listState,
     ) {
