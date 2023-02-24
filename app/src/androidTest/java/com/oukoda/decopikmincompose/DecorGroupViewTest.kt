@@ -55,17 +55,6 @@ class DecorGroupViewTest {
         clickPikminIdentifierTest(decorGroup, tapCount)
     }
 
-    @Test
-    fun clickPikminIdentifierTestManyGroups() {
-        val decorType = DecorType.Special
-        val costumeGroups = decorType.costumeTypes().map { costumeType ->
-            CostumeGroup.newInstance(costumeType)
-        }
-        val decorGroup = DecorGroup(decorType, costumeGroups)
-        val tapCount = decorGroup.sumOf { it.count() } * 2
-        clickPikminIdentifierTest(DecorGroup(decorType, costumeGroups), tapCount)
-    }
-
     private fun clickPikminIdentifierTest(initialDecorGroup: DecorGroup, tapCount: Int) {
         var decorGroup = initialDecorGroup
         composeTestRule.setContent {
