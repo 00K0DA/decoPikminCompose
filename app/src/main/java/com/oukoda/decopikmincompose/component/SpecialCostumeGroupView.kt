@@ -63,10 +63,11 @@ fun SpecialCostumeGroupView(
         ) {
             Card(
                 elevation = 2.dp,
-                modifier = Modifier.padding(top = 8.dp),
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 4.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                     for (pikminData in costumeGroup) {
