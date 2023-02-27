@@ -39,7 +39,6 @@ class SpecialScreenTest {
             val showSpecialDecorGroup by mainViewModel.showSpecialDecorGroups.collectAsState()
             val showSpecialCompleteCostume by mainViewModel.showCompleteSpecial.collectAsState()
 
-
             isLoading = isLoadingState
 
             SpecialScreen(

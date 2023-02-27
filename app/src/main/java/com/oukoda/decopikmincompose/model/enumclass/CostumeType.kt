@@ -76,7 +76,6 @@ enum class CostumeType {
             ShinyChef,
             NewYear,
             MountainPinBadge,
-            Sushi,
             ThemeParkTicket,
             BallKeyChain,
             KoppaiteSpaceSuit,
