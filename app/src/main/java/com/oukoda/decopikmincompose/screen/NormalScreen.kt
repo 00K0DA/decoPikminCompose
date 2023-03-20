@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,21 +29,21 @@ fun NormalScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = listState,
     ) {
-        itemsIndexed(showDecors) { index, decor ->
-            if (index == 0) {
-                Spacer(modifier = Modifier.height(16.dp))
-                AllPikminInfoView(
-                    allDecorGroups = allDecors,
-                    showCompleteDecorType = showCompleteDecor,
-                ) {
-                    onSwitchChanged(it)
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+            AllPikminInfoView(
+                allDecorGroups = allDecors,
+                showCompleteDecorType = showCompleteDecor,
+            ) {
+                onSwitchChanged(it)
             }
+        }
+        items(showDecors) { decor ->
             DecorGroupView(decor, onClick)
-            if (index == showDecors.size - 1) {
-                Spacer(modifier = Modifier.height(96.dp))
-            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(96.dp))
         }
     }
 }

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,25 +29,26 @@ fun SpecialScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = listState,
     ) {
-        itemsIndexed(specialDecorGroup) { index, costumeGroup ->
-            if (index == 0) {
-                Spacer(modifier = Modifier.height(16.dp))
-                AllPikminInfoView(
-                    allDecorGroups = listOf(allSpecialDecorGroup),
-                    showCompleteDecorType = showCompleteCostume,
-                ) {
-                    onSwitchChanged(it)
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+            AllPikminInfoView(
+                allDecorGroups = listOf(allSpecialDecorGroup),
+                showCompleteDecorType = showCompleteCostume,
+            ) {
+                onSwitchChanged(it)
             }
+        }
+
+        items(specialDecorGroup) { costumeGroup ->
             SpecialCostumeGroupView(
                 costumeGroup,
             ) {
                 onClick(it)
             }
-            if (index == specialDecorGroup.size - 1) {
-                Spacer(modifier = Modifier.height(96.dp))
-            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(96.dp))
         }
     }
 }
