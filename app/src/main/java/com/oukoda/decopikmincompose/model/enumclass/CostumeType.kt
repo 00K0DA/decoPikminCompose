@@ -41,6 +41,7 @@ enum class CostumeType {
 
     // LoadSide
     Sticker,
+    Coin,
 
     // Bus Stop
     BusPaperCraft,
@@ -125,6 +126,7 @@ enum class CostumeType {
             BallKeyChain -> R.string.costume_mountain_ball_keychain
             LeafHat -> R.string.costume_leaf_hat
             Sticker -> R.string.costume_sticker
+            Coin -> R.string.costume_coin
             Mario -> R.string.costume_special_mario
             NewYear -> R.string.costume_special_new_year
             Chess -> R.string.costume_special_chess
