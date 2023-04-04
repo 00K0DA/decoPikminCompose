@@ -41,7 +41,7 @@ class PikminIdentifierViewTest {
             }
         }
         (0..10).forEach { _ ->
-            val labelString = activity.getString(pikminIdentifier.pikminType.stringId())
+            val labelString = activity.getString(pikminIdentifier.pikminType.stringId)
             val node = composeTestRule.onNodeWithText(labelString)
             node.assertIsDisplayed()
             node.performClick()

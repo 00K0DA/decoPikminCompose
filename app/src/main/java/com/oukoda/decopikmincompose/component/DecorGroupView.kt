@@ -45,7 +45,7 @@ fun DecorGroupView(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ExpandTitleView(
-            title = stringResource(id = decorGroup.decorType.stringId()),
+            title = stringResource(id = decorGroup.decorType.stringId),
             allCount = decorGroup.getCount(),
             hasCount = decorGroup.getHaveCount(),
             isExpand = isExpand,

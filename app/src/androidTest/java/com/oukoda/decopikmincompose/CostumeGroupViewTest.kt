@@ -56,7 +56,7 @@ class CostumeGroupViewTest {
         val labelStringTemplate = activity.getString(R.string.pikmin_list_view_status)
         val pikminIdentifierViews = PikminType.values().map { pikminType ->
             val views =
-                composeTestRule.onAllNodesWithText(activity.getString(pikminType.stringId()))
+                composeTestRule.onAllNodesWithText(activity.getString(pikminType.stringId))
             (0 until views.fetchSemanticsNodes().size).map { index ->
                 views[index]
             }
@@ -65,7 +65,7 @@ class CostumeGroupViewTest {
         (0..5).forEach { _ ->
             pikminIdentifierViews.forEach { node ->
                 val labelString = labelStringTemplate.format(
-                    activity.getString(costumeGroup.costumeType.stringId()),
+                    activity.getString(costumeGroup.costumeType.stringId),
                     costumeGroup.getHaveCount(),
                     costumeGroup.count(),
                 )

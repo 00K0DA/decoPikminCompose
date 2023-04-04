@@ -58,7 +58,7 @@ fun PikminIdentifierView(
 @VisibleForTesting
 private fun PikminTypeText(pikminType: PikminType) {
     Text(
-        text = stringResource(id = pikminType.stringId()),
+        text = stringResource(id = pikminType.stringId),
         fontSize = 12.sp,
         color = Color.White,
     )
@@ -68,7 +68,7 @@ private fun PikminTypeText(pikminType: PikminType) {
 @VisibleForTesting
 private fun PikminStatusText(pikminStatusType: PikminStatusType) {
     Text(
-        text = stringResource(id = pikminStatusType.stringId()),
+        text = stringResource(id = pikminStatusType.stringId),
         fontSize = 12.sp,
         color = pikminStatusType.stringColor(),
     )

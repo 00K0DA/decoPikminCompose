@@ -41,7 +41,7 @@ fun SpecialCostumeGroupView(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ExpandTitleView(
-            title = stringResource(id = costumeGroup.costumeType.stringId()),
+            title = stringResource(id = costumeGroup.costumeType.stringId),
             allCount = costumeGroup.count(),
             hasCount = costumeGroup.getHaveCount(),
             isExpand = isExpand,

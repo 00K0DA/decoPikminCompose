@@ -59,7 +59,7 @@ class SpecialScreenTest {
         (costumeTypes.indices).forEach {
             val costumeType = costumeTypes[it]
             val costumeTypeNode =
-                composeTestRule.onNodeWithText(composeTestRule.activity.getString(costumeType.stringId()))
+                composeTestRule.onNodeWithText(composeTestRule.activity.getString(costumeType.stringId))
 
             // DecorTypeが表示されること
             costumeTypeNode.assertExists()
