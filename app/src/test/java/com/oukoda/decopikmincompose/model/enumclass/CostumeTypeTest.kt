@@ -7,7 +7,7 @@ class CostumeTypeTest {
     @Test
     fun isTextIdUnique() {
         val stringIds: List<Int> = CostumeType.values().map {
-            it.stringId()
+            it.stringId
         }
 
         stringIds.forEach { stringId ->

@@ -56,12 +56,12 @@ class SpecialCostumeGroupView {
             }
         }
 
-        val costumeGroupLabel = activity.getString(costumeType.stringId())
+        val costumeGroupLabel = activity.getString(costumeType.stringId)
         composeTestRule.onNodeWithText(costumeGroupLabel).assertExists().performClick()
 
         val pikminIdentifierViews = PikminType.values().map { pikminType ->
             val views =
-                composeTestRule.onAllNodesWithText(activity.getString(pikminType.stringId()))
+                composeTestRule.onAllNodesWithText(activity.getString(pikminType.stringId))
             (0 until views.fetchSemanticsNodes().size).map { index ->
                 views[index]
             }

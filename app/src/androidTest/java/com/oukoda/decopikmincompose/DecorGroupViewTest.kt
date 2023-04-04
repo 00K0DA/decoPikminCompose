@@ -85,14 +85,14 @@ class DecorGroupViewTest {
 
         val activity = composeTestRule.activity
         val decorTextNode =
-            composeTestRule.onNodeWithText(activity.getString(decorGroup.decorType.stringId()))
+            composeTestRule.onNodeWithText(activity.getString(decorGroup.decorType.stringId))
         decorTextNode.assertExists()
         decorTextNode.performScrollTo()
         decorTextNode.performClick()
 
         val pikminIdentifierViews = PikminType.values().map { pikminType ->
             val views =
-                composeTestRule.onAllNodesWithText(activity.getString(pikminType.stringId()))
+                composeTestRule.onAllNodesWithText(activity.getString(pikminType.stringId))
             (0 until views.fetchSemanticsNodes().size).map { index ->
                 views[index]
             }
@@ -118,7 +118,7 @@ class DecorGroupViewTest {
 
             if (decorGroup.isCompleted()) {
                 composeTestRule
-                    .onNodeWithText(activity.getString(PikminStatusType.NotHave.stringId()))
+                    .onNodeWithText(activity.getString(PikminStatusType.NotHave.stringId))
                     .assertDoesNotExist()
             }
 
@@ -126,7 +126,7 @@ class DecorGroupViewTest {
                 val pikminCountTextTemplate =
                     activity.getString(R.string.pikmin_list_view_status)
                 val pikminCountText = pikminCountTextTemplate.format(
-                    activity.getString(costumeGroup.costumeType.stringId()),
+                    activity.getString(costumeGroup.costumeType.stringId),
                     costumeGroup.getHaveCount(),
                     costumeGroup.count(),
                 )

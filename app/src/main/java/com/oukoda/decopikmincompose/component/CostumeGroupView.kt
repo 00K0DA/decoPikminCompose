@@ -22,7 +22,7 @@ fun CostumeGroupView(
     costumeGroup: CostumeGroup,
     onClick: (costumeType: CostumeType, pikminIdentifier: PikminIdentifier) -> Unit,
 ) {
-    val costumeName = stringResource(id = costumeGroup.costumeType.stringId())
+    val costumeName = stringResource(id = costumeGroup.costumeType.stringId)
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -89,7 +89,7 @@
     <string name="costume_coin">コイン</string>
     <string name="costume_sushi">お寿司</string>
     <string name="costume_mountain_pin_badge">山のバッジ</string>
-    <string name="costume_mountain_ball_keychain">ボールのキーホルダー</string>
+    <string name="costume_ball_keychain">ボールのキーホルダー</string>
     <string name="costume_leaf_hat">葉っぱの帽子</string>
     <string name="costume_theme_park_ticket">テーマパークチケット</string>
     <string name="costume_pizza">ピザ</string>
@@ -106,7 +106,7 @@
     <string name="costume_special_mitten">手ぶくろ</string>
     <string name="costume_special_2023_glasses">2023メガネ</string>
     <string name="costume_special_new_year_2023">旧正月の飾り 2023</string>
-    <string name="costume_easter">イースターエッグ</string>
+    <string name="costume_special_easter">イースターエッグ</string>
     <string name="costume_special_present_sticker_2023">プレゼントシール</string>
 
 </resources>

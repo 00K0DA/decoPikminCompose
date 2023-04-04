@@ -7,7 +7,7 @@ class DecorTypeTest {
     @Test
     fun isTextIdUnique() {
         val stringIds: List<Int> = DecorType.values().map {
-            it.stringId()
+            it.stringId
         }
 
         stringIds.forEach { stringId ->

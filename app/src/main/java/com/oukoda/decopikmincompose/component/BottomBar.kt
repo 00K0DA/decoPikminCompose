@@ -22,7 +22,7 @@ fun BottomBar(route: String, onTap: (BottomItems) -> Unit) {
                 onClick = {
                     onTap(bottomItem)
                 },
-                label = { Text(stringResource(id = bottomItem.stringId())) },
+                label = { Text(stringResource(id = bottomItem.stringId)) },
                 icon = {
                     Icon(
                         imageVector = bottomItem.imageVector(),

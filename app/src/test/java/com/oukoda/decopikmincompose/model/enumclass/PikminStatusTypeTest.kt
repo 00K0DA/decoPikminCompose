@@ -29,7 +29,7 @@ class PikminStatusTypeTest {
     @Test
     fun isStringIdUnique() {
         val stringIds: List<Int> = PikminStatusType.values().map {
-            it.stringId()
+            it.stringId
         }
 
         stringIds.forEach { stringId ->

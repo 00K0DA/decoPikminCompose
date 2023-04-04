@@ -59,9 +59,9 @@ class NormalScreenTest {
         (decorTypes.indices).forEach {
             val decorType = decorTypes[it]
             val decorTypeNode =
-                composeTestRule.onNodeWithText(composeTestRule.activity.getString(decorType.stringId()))
+                composeTestRule.onNodeWithText(composeTestRule.activity.getString(decorType.stringId))
             val specialDecorNode =
-                composeTestRule.onNodeWithText(composeTestRule.activity.getString(DecorType.Special.stringId()))
+                composeTestRule.onNodeWithText(composeTestRule.activity.getString(DecorType.Special.stringId))
 
             // DecorTypeが表示されること
             decorTypeNode.assertExists()
