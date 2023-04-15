@@ -34,6 +34,7 @@ enum class DecorType(@StringRes val stringId: Int) {
     ThemePark(R.string.decor_type_theme_park),
     BusStop(R.string.decor_type_bus_stop),
     ItalianRestaurant(R.string.decor_type_italian_restaurant),
+    RamenRestaurant(R.string.decor_type_ramen_restaurant)
     ;
 
     fun costumeTypes(): List<CostumeType> = when (this) {
@@ -82,5 +83,6 @@ enum class DecorType(@StringRes val stringId: Int) {
         BusStop -> listOf(CostumeType.BusPaperCraft)
         Stadium -> listOf(CostumeType.BallKeyChain)
         ItalianRestaurant -> listOf(CostumeType.Pizza)
+        RamenRestaurant -> listOf(CostumeType.RamenKeyChain)
     }
 }

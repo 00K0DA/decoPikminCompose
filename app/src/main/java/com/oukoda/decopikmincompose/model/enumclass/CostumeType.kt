@@ -47,6 +47,9 @@ enum class CostumeType(@StringRes val stringId: Int) {
     // Bus Stop
     BusPaperCraft(R.string.costume_special_bus_parer_craft),
 
+    Pizza(R.string.costume_pizza),
+    RamenKeyChain(R.string.costume_ramen_keychain),
+
     // Special
     Mario(R.string.costume_special_mario),
     NewYear(R.string.costume_special_new_year),
@@ -62,7 +65,6 @@ enum class CostumeType(@StringRes val stringId: Int) {
     PresentSticker2023(R.string.costume_special_present_sticker_2023),
     Easter(R.string.costume_special_easter),
     ThemeParkTicket(R.string.costume_theme_park_ticket),
-    Pizza(R.string.costume_pizza),
     ;
 
     companion object {
@@ -83,6 +85,7 @@ enum class CostumeType(@StringRes val stringId: Int) {
             KoppaiteSpaceSuit,
             Mitten,
             NewYear2023,
+            RamenKeyChain,
             ->
                 listOf(PikminType.Red, PikminType.Blue, PikminType.Yellow)
             FingerBoard ->
